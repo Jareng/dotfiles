@@ -1,0 +1,68 @@
+# wm independent hotkeys
+
+# Rofi
+super + r
+  rofi -show drun
+
+super + shift + e
+  rofi -show emoji
+
+# dmenu
+super + shift + r
+  dmenu_run
+
+# printscreen
+@Print
+  screenshot
+
+shift + @Print
+  screenshot select
+
+control + @Print
+  screenshot window
+
+# volume keys
+super + Prior
+  changevolume up
+
+super + Next
+  changevolume down
+
+super + End
+  changevolume mute
+
+XF86AudioRaiseVolume
+  changevolume up
+
+XF86AudioLowerVolume
+  changevolume down
+
+XF86AudioMute
+  changevolume mute
+
+# lockscreen
+super + control + shift + p
+  systemctl suspend
+
+super + shift + p
+  powermenu
+
+# notifications
+ctrl + space
+  dunstctl close
+
+ctrl + shift + space
+  dunstctl close-all
+
+ctrl + shift + period
+  dunstctl context
+
+# Apps
+super + shift + Return
+  alacritty
+
+super + v
+  pcmanfm
+
+super + b
+  firefox
