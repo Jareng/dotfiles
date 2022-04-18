@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Export
+export PATH="${PATH}:/home/jareng/.scripts"
+
+# Settings
+xset s off &
+setxkbmap fr &
+
+# Apps
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+picom --experimental-backends -b --config ~/.config/picom/picom.conf &
+sxhkd &
+nitrogen --restore &
+dunst &
