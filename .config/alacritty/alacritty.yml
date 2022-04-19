@@ -3,7 +3,7 @@ env:
 
 window:
   padding:
-    x: 0
+    x: 4
     y: 0
 
   title: Alacritty
@@ -32,7 +32,7 @@ font:
     family: Hack Nerd Font Mono 
     style: Bold Italic
 
-  size: 15.0
+  size: 16.0
 
   offset:
     x: 0
