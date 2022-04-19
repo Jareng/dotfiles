@@ -13,6 +13,7 @@ from libqtile.widget.wttr import Wttr
 from libqtile.widget.net import Net
 from libqtile.widget.windowtabs import WindowTabs
 from libqtile.widget.pulse_volume import PulseVolume
+from libqtile.widget.graph import HDDBusyGraph
 from libqtile.widget.cpu import CPU
 from libqtile.widget.memory import Memory
 from libqtile.widget.clock import Clock
@@ -21,7 +22,7 @@ from libqtile.widget.systray import Systray
 # import color scheme
 import colors
 
-colors = colors.nord
+theme = colors.nord
 
 
 # mod
@@ -40,15 +41,13 @@ pulse_app = "pavucontrol"
 # widget settings
 lang = "fr"
 wttr_loc = {"50.531999, 2.641206": "Bethune"}
-spacer_length = 5
+spacer_length = 10
 widget_defaults = dict(
-    # font="JetBrainsMono Nerd Font Mono Medium",
-    # font="CaskaydiaCove Nerd Font",
-    # font="FiraCode Nerd Font",
     font=font_base,
     fontsize=14,
-    padding=3,
-    background=colors["bg"]
+    padding=2,
+    background=theme["bg"],
+    foreground=theme["fg"]
 )
 extension_defaults = widget_defaults.copy()
 
@@ -56,8 +55,8 @@ extension_defaults = widget_defaults.copy()
 layout_settings = {
     "border_width": 2,
     "margin": 5,
-    "border_focus": colors["primary_dark"],
-    "border_normal": colors["bg"],
+    "border_focus": theme["primary_dark"],
+    "border_normal": theme["bg"],
     "font": font_base,
     "grow_amount": 4,
 }
@@ -405,49 +404,39 @@ for k, group in zip(group_keys, groups):
 def init_bar():
     return [
         GroupBox(
-            padding=3,
+            padding=1,
             margin_y=3,
             borderwidth=2,
-            active=colors["active"],
-            inactive=colors["inactive"],
+            active=theme["primary"],
+            inactive=theme["grey"],
             disable_drag=True,
             rounded=False,
-            highlight_color=colors["bg_lighter"],
-            block_highlight_text_color=colors["primary"],
+            highlight_color=theme["bg_light"],
+            block_highlight_text_color=theme["green"],
             highlight_method="line",
-            this_current_screen_border=colors["primary"],
-            this_screen_border=colors["bg_lighter"],
-            other_current_screen_border=colors["bg"],
-            other_screen_border=colors["bg"],
-            foreground=colors["fg"],
-            background=colors["bg"],
-            urgent_border=colors["red"],
+            this_current_screen_border=theme["primary"],
+            this_screen_border=theme["bg_light"],
+            other_current_screen_border=theme["bg"],
+            other_screen_border=theme["bg_light"],
+            urgent_border=theme["red"],
         ),
         Spacer(length=spacer_length),
         CurrentLayoutIcon(
             custom_icon_paths=[
                 os.path.expanduser("~/.config/qtile/icons")
             ],
-            background=colors["bg"],
-            foreground=colors["primary"],
-            padding=0,
             scale=0.6,
         ),
         Spacer(length=spacer_length),
         TextBox(
-            background=colors["bg"],
-            foreground=colors["red"],
+            foreground=theme["primary_dark"],
             text="",
             font=font_icons,
-            padding=15,
-        ),
-        WindowTabs(
-            background=colors["bg"],
-            foreground=colors["fg"],
         ),
         Spacer(length=spacer_length),
+        WindowTabs(),
+        Spacer(length=spacer_length),
         Wttr(
-            background=colors["bg"],
             lang=lang,
             location=wttr_loc,
             format="%c %t (%f)",
@@ -455,53 +444,46 @@ def init_bar():
             update_interval=600
         ),
         Spacer(length=spacer_length),
+        HDDBusyGraph(
+            border_width=0,
+            graph_color=theme["primary_dark"]
+        ),
+        Spacer(length=spacer_length),
         TextBox(
-            background=colors["bg"],
-            foreground=colors["primary_dark"],
-            text=" ",
+            foreground=theme["primary_dark"],
+            text="",
             font=font_icons,
         ),
         Net(
-            background=colors["bg"],
-            foreground=colors["fg"],
             format="{down}"
         ),
         Spacer(length=spacer_length),
         TextBox(
-            background=colors["bg"],
-            foreground=colors["primary_dark"],
-            text=" ",
+            foreground=theme["primary_dark"],
+            text="",
             font=font_icons,
         ),
         Net(
-            background=colors["bg"],
-            foreground=colors["fg"],
             format="{up}"
         ),
         Spacer(length=spacer_length),
         TextBox(
-            background=colors["bg"],
-            foreground=colors["primary"],
-            text=" ",
+            foreground=theme["primary_dark"],
+            text="",
             font=font_icons,
         ),
         PulseVolume(
-            background=colors["bg"],
-            foreground=colors["fg"],
             limit_max_volume="True",
             update_interval=0.1,
             mouse_callbacks={"Button3": lambda: qtile.cmd_spawn(pulse_app)},
         ),
         Spacer(length=spacer_length),
         TextBox(
-            background=colors["bg"],
-            foreground=colors["magenta"],
+            foreground=theme["primary_dark"],
             text="",
             font=font_icons,
         ),
         CPU(
-            background=colors["bg"],
-            foreground=colors["fg"],
             update_interval=1,
             format="{load_percent: .0f} %",
         ),
@@ -509,53 +491,31 @@ def init_bar():
         TextBox(
             text="",
             font=font_icons,
-            background=colors["bg"],
-            foreground=colors["primary"],
+            foreground=theme["primary_dark"],
         ),
         Memory(
-            background=colors["bg"],
-            foreground=colors["fg"],
-            format="{MemPercent: .0f} %",
+            format="{MemPercent: .0f} % {SwapUsed: .0f}{mm}",
             # format="{MemUsed: .0f}{mm}",
             measure_mem="G"
         ),
         Spacer(length=spacer_length),
-        Memory(
-            background=colors["bg"],
-            foreground=colors["fg"],
-            # format="{MemPercent: .0f} %",
-            format="{SwapUsed: .0f}{mm}",
-            measure_swap="M"
-        ),
-        Spacer(length=spacer_length),
         TextBox(
-            background=colors["bg"],
-            foreground=colors["green"],
-            text=" ",
+            foreground=theme["primary_dark"],
+            text="",
             font=font_icons,
         ),
         Clock(
-            background=colors["bg"],
-            foreground=colors["fg"],
             format="%a %d %b %H:%M:%S",
             mouse_callbacks={'Button1': open_calendar, 'Button2': close_calendar}
         ),
         Spacer(length=spacer_length),
-        # Systray(
-        #     padding=10,
-        #     foreground=colors[8],
-        #     background=colors["bg"],
-        # ),
+        # Systray(),
         # Spacer(length=spacer_length),
     ]
 
 
 systray = [
-    Systray(
-        padding=10,
-        foreground=colors["primary"],
-        background=colors["bg"],
-    ),
+    Systray(),
     Spacer(length=spacer_length),
 ]
 

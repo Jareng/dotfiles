@@ -1,14 +1,17 @@
 nord = {
-    "primary":      "#81a1c1",
-    "primary_dark": "#5e81ac",
-    "fg":           "#e5e9f0",
+    "primary":      "#81A1C1",
+    "primary_dark": "#5E81AC",
     "bg":           "#242831",
-    "bg_lighter":   "#3b4252",
-    "red":          "#bf616a",
-    "active":       "#e5e9f0",
-    "inactive":     "#4c566a",
-    "green":        "#a3be8c",
-    "magenta":      "#b48ead",
+    "bg_light":     "#3B4252",
+    "fg":           "#D8DEE9",
+    "red":          "#BF616A",
+    "green":        "#A3BE8C",
+    "yellow":       "#EBCB8B",
+    "blue":         "#81A1C1",
+    "magenta":      "#B48EAD",
+    "cyan":         "#88C0D0",
+    "white":        "#E5E9F0",
+    "grey":         "#4C566A",
 }
 
 # Nord
