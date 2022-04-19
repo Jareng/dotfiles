@@ -38,7 +38,5 @@ fi
 [ -f /etc/xprofile ] && . /etc/xprofile
 [ -f ~/.xprofile ] && . ~/.xprofile
 
-sh ~/.config/startup.sh
-
 exec qtile start
 #exec bspwm
