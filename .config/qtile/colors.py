@@ -5,6 +5,7 @@ nord = {
     "bg_light":     "#3B4252",
     "fg":           "#D8DEE9",
     "red":          "#BF616A",
+    "orange":       "#D08770",
     "green":        "#A3BE8C",
     "yellow":       "#EBCB8B",
     "blue":         "#81A1C1",

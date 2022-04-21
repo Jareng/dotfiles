@@ -4,7 +4,7 @@ from libqtile import qtile, layout, hook, bar
 from libqtile.command import lazy
 from libqtile.config import Key, Group, Match, Click, Drag, Screen
 
-# import widgets
+# widgets
 from libqtile.widget.spacer import Spacer
 from libqtile.widget.groupbox import GroupBox
 from libqtile.widget.currentlayout import CurrentLayoutIcon
@@ -19,9 +19,10 @@ from libqtile.widget.memory import Memory
 from libqtile.widget.clock import Clock
 from libqtile.widget.systray import Systray
 
-# import color scheme
+# color scheme
 import colors
 
+# color scheme
 theme = colors.nord
 
 
@@ -30,7 +31,7 @@ mod = "mod4"
 alt = "mod1"
 
 # Fonts
-font_base = "NotoSans Nerd Font Medium"
+font_base = "NotoSans Nerd Font Bold"
 font_icons = "Font Awesome 6 Free Solid"
 
 # Apps
@@ -40,7 +41,7 @@ pulse_app = "pavucontrol"
 
 # widget settings
 lang = "fr"
-wttr_loc = {"50.531999, 2.641206": "Bethune"}
+wttr_loc = {"50.5199,2.64781": "Béthune"}
 spacer_length = 10
 widget_defaults = dict(
     font=font_base,
@@ -63,8 +64,8 @@ layout_settings = {
 labels = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"]
 
 # bars settings
-main_bar_height = 30
-secondary_bar_height = 20
+main_bar_height = 26
+secondary_bar_height = 18
 
 # general settings
 home = os.path.expanduser("~")
@@ -82,11 +83,15 @@ auto_minimize = True
 
 # functions
 def open_calendar():  # spawn calendar widget
-    qtile.cmd_spawn('gsimplecal')
+    qtile.cmd_spawn("gsimplecal")
 
 
 def close_calendar():  # kill calendar widget
-    qtile.cmd_spawn('killall -q gsimplecal')
+    qtile.cmd_spawn("killall -q gsimplecal")
+
+
+def show_weather():
+    qtile.cmd_spawn(f"{terminal} --hold -t 'Wttr-Weather' -e wttr {list(wttr_loc.values())[0]}")
 
 
 #
@@ -128,21 +133,21 @@ keys = [
     Key([mod], "f",
         lazy.window.toggle_fullscreen(),
         desc="toggle Fullscreen"
-        ),
+    ),
 
     # LAYOUTS
     Key([mod], "Tab",
         lazy.next_layout(),
         desc="Toggle between layouts"
-        ),
+    ),
     Key([mod, "shift"], "space",
         lazy.layout.flip(),
         desc="Flip layout"
-        ),
+    ),
     Key([mod], "t",
         lazy.window.toggle_floating(),
         desc="Toggle Floating",
-        ),
+    ),
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
     Key([mod, "control"], "Left",
@@ -151,89 +156,89 @@ keys = [
         lazy.layout.decrease_ratio(),
         lazy.layout.add(),
         desc="Grow window to the left",
-        ),
+    ),
     Key([mod, "control"], "Right",
         lazy.layout.grow_right(),
         lazy.layout.grow(),
         lazy.layout.increase_ratio(),
         lazy.layout.delete(),
         desc="Grow window to the right",
-        ),
+    ),
     Key([mod, "control"], "Down",
         lazy.layout.grow_down(),
         lazy.layout.shrink(),
         lazy.layout.increase_nmaster(),
         desc="Grow window down",
-        ),
+    ),
     Key([mod, "control"], "Up",
         lazy.layout.grow_up(),
         lazy.layout.grow(),
         lazy.layout.decrease_nmaster(),
         desc="Grow window up",
-        ),
+    ),
     Key([mod], "n",
         lazy.layout.normalize(),
         desc="Reset all window sizes"
-        ),
+    ),
 
     # MOVEMENTS
     Key([alt], "Tab",
         lazy.layout.next(),
         desc="Move window focus to other window"
-        ),
+    ),
     Key([mod], "Left",
         lazy.layout.left(),
         desc="Move focus to left"
-        ),
+    ),
     Key([mod], "Right",
         lazy.layout.right(),
         desc="Move focus to right"
-        ),
+    ),
     Key([mod], "Down",
         lazy.layout.down(),
         desc="Move focus down"
-        ),
+    ),
     Key([mod], "Up",
         lazy.layout.up(),
         desc="Move focus up"
-        ),
+    ),
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
     Key([mod, "shift"], "Left",
         lazy.layout.shuffle_left(),
         desc="Move window to the left"
-        ),
+    ),
     Key([mod, "shift"], "Right",
         lazy.layout.shuffle_right(),
         desc="Move window to the right",
-        ),
+    ),
     Key([mod, "shift"], "Down",
         lazy.layout.shuffle_down(),
         desc="Move window down"
-        ),
+    ),
     Key([mod, "shift"], "Up",
         lazy.layout.shuffle_up(),
         desc="Move window up"
-        ),
+    ),
 
     Key([mod], "q",
         lazy.window.kill(),
         desc="Kill focused window"
-        ),
+    ),
     Key([mod, "control"], "r",
         lazy.restart(),
         desc="Restart Qtile"
-        ),
+    ),
     Key([mod, "control"], "q",
         lazy.shutdown(),
         desc="Shutdown Qtile"
-        ),
+    ),
 
     # APPLICATIONS
     Key([mod], "Return",
         lazy.spawn(terminal),
         desc="Launch terminal"
-        ),
+    ),
 ]
 
 
@@ -244,21 +249,21 @@ mouse = [
     Drag([mod], "Button1",
          lazy.window.set_position_floating(),
          start=lazy.window.get_position(),
-         ),
+    ),
     Drag([mod], "Button3",
          lazy.window.set_size_floating(),
          start=lazy.window.get_size()
-         ),
+    ),
     Click([mod], "Button2",
           lazy.window.bring_to_front()
-          ),
+    ),
 ]
 
 layouts = [
     layout.Max(),
     layout.MonadTall(
         **layout_settings,
-        ratio=0.65,
+        ratio=0.60,
         single_border_width=0,
         single_margin=0,
     ),
@@ -275,53 +280,70 @@ layouts = [
     # layout.Zoomy(**layout_theme),
 ]
 
+# floating_layout = layout.Floating(
+#     **layout_settings,
+#     float_rules=[
+#         # Run the utility of `xprop` to see the wm class and name of an X client.
+#         *layout.Floating.default_float_rules,
+#         Match(title="weather"),
+#         Match(title="branchdialog"),  # gitk
+#         Match(title="pinentry"),  # GPG key password entry
+#         Match(title="Open File"),
+#         Match(title="Unlock Database - KeePassXC"),  # Wayland
+#         Match(title="File Operation Progress", wm_class="thunar"),  # Wayland
+#         Match(title="Friends List", wm_class="Steam"),
+#         Match(wm_class="confirmreset"),  # gitk
+#         Match(wm_class="makebranch"),  # gitk
+#         Match(wm_class="maketag"),  # gitk
+#         Match(wm_class="ssh-askpass"),  # ssh-askpass
+#         Match(wm_class="Arandr"),
+#         Match(wm_class="QjackCtl"),
+#         Match(wm_class="org.kde.ark"),
+#         Match(wm_class="confirm"),
+#         Match(wm_class="dialog"),
+#         Match(wm_class="download"),
+#         Match(wm_class="error"),
+#         Match(wm_class="fiji-Main"),
+#         Match(wm_class="file_progress"),
+#         Match(wm_class="imv"),
+#         Match(wm_class="lxappearance"),
+#         Match(wm_class="mpv"),
+#         Match(wm_class="notification"),
+#         Match(wm_class="pavucontrol"),
+#         Match(wm_class="Pinentry-gtk-2"),
+#         Match(wm_class="qt5ct"),
+#         Match(wm_class="ssh-askpass"),
+#         Match(wm_class="Dragon"),
+#         Match(wm_class="Dragon-drag-and-drop"),
+#         Match(wm_class="toolbar"),
+#         Match(wm_class="wlroots"),
+#         Match(wm_class="Xephyr"),
+#         Match(wm_class="yad"),
+#         Match(wm_class="nvidia-settings"),
+#         Match(wm_type='utility'),
+#         Match(wm_type='notification'),
+#         Match(wm_type='toolbar'),
+#         Match(wm_type='splash'),
+#         Match(wm_type='dialog'),
+#         Match(role="gimp-file-export"),
+#         Match(func=lambda c: c.has_fixed_size()),
+#         Match(func=lambda c: bool(c.is_transient_for())),
+#     ]
+# )
+
+
 floating_layout = layout.Floating(
     **layout_settings,
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
-        Match(title="branchdialog"),  # gitk
-        Match(title="pinentry"),  # GPG key password entry
-        Match(title="Open File"),
-        Match(title="Unlock Database - KeePassXC"),  # Wayland
-        Match(title="File Operation Progress", wm_class="thunar"),  # Wayland
-        Match(title="Friends List", wm_class="Steam"),
-        Match(wm_class="confirmreset"),  # gitk
-        Match(wm_class="makebranch"),  # gitk
-        Match(wm_class="maketag"),  # gitk
-        Match(wm_class="ssh-askpass"),  # ssh-askpass
-        Match(wm_class="Arandr"),
-        Match(wm_class="QjackCtl"),
-        Match(wm_class="org.kde.ark"),
-        Match(wm_class="confirm"),
-        Match(wm_class="dialog"),
-        Match(wm_class="download"),
-        Match(wm_class="error"),
-        Match(wm_class="fiji-Main"),
-        Match(wm_class="file_progress"),
-        Match(wm_class="imv"),
-        Match(wm_class="lxappearance"),
-        Match(wm_class="mpv"),
-        Match(wm_class="notification"),
-        Match(wm_class="pavucontrol"),
-        Match(wm_class="Pinentry-gtk-2"),
-        Match(wm_class="qt5ct"),
-        Match(wm_class="ssh-askpass"),
-        Match(wm_class="Dragon"),
-        Match(wm_class="Dragon-drag-and-drop"),
-        Match(wm_class="toolbar"),
-        Match(wm_class="wlroots"),
-        Match(wm_class="Xephyr"),
-        Match(wm_class="yad"),
-        Match(wm_class="nvidia-settings"),
-        Match(wm_type='utility'),
-        Match(wm_type='notification'),
-        Match(wm_type='toolbar'),
-        Match(wm_type='splash'),
-        Match(wm_type='dialog'),
-        Match(role="gimp-file-export"),
-        Match(func=lambda c: c.has_fixed_size()),
-        Match(func=lambda c: bool(c.is_transient_for())),
+        Match(title="Wttr-Weather"),
+        # Match(wm_class="confirmreset"),  # gitk
+        # Match(wm_class="makebranch"),  # gitk
+        # Match(wm_class="maketag"),  # gitk
+        # Match(wm_class="ssh-askpass"),  # ssh-askpass
+        # Match(title="branchdialog"),  # gitk
+        # Match(title="pinentry"),  # GPG key password entry
     ]
 )
 
@@ -330,16 +352,49 @@ floating_layout = layout.Floating(
 # GROUPS
 #
 groups = [
-    Group("1",  label=labels[0], layout="max"),
-    Group("2",  label=labels[1], layout="max"),
-    Group("3",  label=labels[2], layout="max",       matches=[Match(wm_class=["Geany"])]),
-    Group("4",  label=labels[3], layout="monadtall"),
-    Group("5",  label=labels[4], layout="monadtall"),
-    Group("6",  label=labels[5], layout="monadtall"),
-    Group("7",  label=labels[6], layout="monadtall"),
-    Group("8",  label=labels[7], layout="max",       matches=[Match(wm_class=["Guitarix"])]),
-    Group("9",  label=labels[8], layout="max",       matches=[Match(wm_class=["Spotify"])]),
-    Group("10", label=labels[9], layout="max",       matches=[Match(wm_class=["jellyfinmediaplayer"])]),
+    Group("1",
+        label=labels[0],
+        layout="max"),
+    Group("2",
+        label=labels[1],
+        layout="max"
+    ),
+    Group("3",
+        label=labels[2],
+        layout="max",
+        matches=[Match(wm_class=["Geany"])]
+    ),
+    Group("4",
+        label=labels[3],
+        layout="monadtall"
+    ),
+    Group("5",
+        label=labels[4],
+        layout="monadtall"
+    ),
+    Group("6",
+        label=labels[5],
+        layout="monadtall"
+    ),
+    Group("7",
+        label=labels[6],
+        layout="monadtall"
+    ),
+    Group("8",
+        label=labels[7],
+        layout="max",
+        matches=[Match(wm_class=["Guitarix"])]
+    ),
+    Group("9",
+        label=labels[8],
+        layout="max",
+        matches=[Match(wm_class=["Spotify"])]
+    ),
+    Group("10",
+        label=labels[9],
+        layout="max",
+        matches=[Match(wm_class=["jellyfinmediaplayer"])]
+    ),
 ]
 
 # QWERTY
@@ -407,13 +462,13 @@ def init_bar():
             padding=1,
             margin_y=3,
             borderwidth=2,
-            active=theme["primary"],
-            inactive=theme["grey"],
             disable_drag=True,
             rounded=False,
-            highlight_color=theme["bg_light"],
-            block_highlight_text_color=theme["green"],
             highlight_method="line",
+            active=theme["primary"],
+            inactive=theme["grey"],
+            highlight_color=theme["bg_light"],
+            block_highlight_text_color=theme["primary"],
             this_current_screen_border=theme["primary"],
             this_screen_border=theme["bg_light"],
             other_current_screen_border=theme["bg"],
@@ -425,11 +480,11 @@ def init_bar():
             custom_icon_paths=[
                 os.path.expanduser("~/.config/qtile/icons")
             ],
-            scale=0.6,
+            scale=0.8,
         ),
         Spacer(length=spacer_length),
         TextBox(
-            foreground=theme["primary_dark"],
+            foreground=theme["primary"],
             text="",
             font=font_icons,
         ),
@@ -441,16 +496,17 @@ def init_bar():
             location=wttr_loc,
             format="%c %t (%f)",
             units="m",
-            update_interval=600
+            update_interval=600,
+            mouse_callbacks={"Button1": show_weather}
         ),
         Spacer(length=spacer_length),
         HDDBusyGraph(
             border_width=0,
-            graph_color=theme["primary_dark"]
+            graph_color=theme["primary"]
         ),
         Spacer(length=spacer_length),
         TextBox(
-            foreground=theme["primary_dark"],
+            foreground=theme["primary"],
             text="",
             font=font_icons,
         ),
@@ -459,7 +515,7 @@ def init_bar():
         ),
         Spacer(length=spacer_length),
         TextBox(
-            foreground=theme["primary_dark"],
+            foreground=theme["primary"],
             text="",
             font=font_icons,
         ),
@@ -468,7 +524,7 @@ def init_bar():
         ),
         Spacer(length=spacer_length),
         TextBox(
-            foreground=theme["primary_dark"],
+            foreground=theme["primary"],
             text="",
             font=font_icons,
         ),
@@ -479,7 +535,7 @@ def init_bar():
         ),
         Spacer(length=spacer_length),
         TextBox(
-            foreground=theme["primary_dark"],
+            foreground=theme["primary"],
             text="",
             font=font_icons,
         ),
@@ -491,7 +547,7 @@ def init_bar():
         TextBox(
             text="",
             font=font_icons,
-            foreground=theme["primary_dark"],
+            foreground=theme["primary"],
         ),
         Memory(
             format="{MemPercent: .0f} % {SwapUsed: .0f}{mm}",
@@ -500,7 +556,7 @@ def init_bar():
         ),
         Spacer(length=spacer_length),
         TextBox(
-            foreground=theme["primary_dark"],
+            foreground=theme["primary"],
             text="",
             font=font_icons,
         ),
@@ -520,6 +576,7 @@ systray = [
 ]
 
 main_bar = init_bar() + systray
+second_bar = init_bar()
 
 screens = [
     Screen(
@@ -530,7 +587,7 @@ screens = [
     ),
     Screen(
         top=bar.Bar(
-            init_bar(),
+            second_bar,
             size=secondary_bar_height
         )
     ),
