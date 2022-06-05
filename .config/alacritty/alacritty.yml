@@ -402,7 +402,7 @@ schemes:
 #colors: *OceanicNext
 colors: *Nord
 
-opacity: 1.0
+opacity: 0.8
 
 cursor:
   # Values for `style`:
