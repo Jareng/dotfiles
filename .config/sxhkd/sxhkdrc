@@ -58,7 +58,7 @@ ctrl + shift + period
   dunstctl context
 
 # Apps
-super + shift + Return
+super + Return
   alacritty
 
 super + v
