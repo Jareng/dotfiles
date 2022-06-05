@@ -1,15 +1,16 @@
 #!/bin/sh
 
 # Export
-export PATH="${PATH}:/home/jareng/.scripts"
+export PATH="${PATH}:/home/$(whoami)/.scripts"
 
 # Settings
 xset s off &
-setxkbmap fr &
+setxkbmap fr
 
 # Apps
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-picom --experimental-backends -b --config ~/.config/picom/picom.conf &
+picom --experimental-backends -b --config ~/.config/picom/picom.conf
 sxhkd &
-nitrogen --restore &
+nitrogen --restore
 dunst &
+unclutter --timeout 2 &
