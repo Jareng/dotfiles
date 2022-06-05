@@ -1,23 +1,15 @@
 import os
 import subprocess
-from libqtile import qtile, layout, hook, bar
+import asyncio
+from libqtile import layout, hook, bar
 from libqtile.command import lazy
-from libqtile.config import Key, Group, Match, Click, Drag, Screen
+from libqtile.config import Key, Group, Match, Click, Drag, \
+    Screen, ScratchPad, DropDown
 
 # widgets
-from libqtile.widget.spacer import Spacer
-from libqtile.widget.groupbox import GroupBox
-from libqtile.widget.currentlayout import CurrentLayoutIcon
-from libqtile.widget.textbox import TextBox
-from libqtile.widget.wttr import Wttr
-from libqtile.widget.net import Net
-from libqtile.widget.windowtabs import WindowTabs
-from libqtile.widget.pulse_volume import PulseVolume
-from libqtile.widget.graph import HDDBusyGraph
-from libqtile.widget.cpu import CPU
-from libqtile.widget.memory import Memory
-from libqtile.widget.clock import Clock
-from libqtile.widget.systray import Systray
+from libqtile.widget import Spacer, GroupBox, CurrentLayoutIcon, \
+    TextBox, Wttr, Net, WindowTabs, PulseVolume, HDDBusyGraph, \
+    CPU, Memory, Clock, Systray
 
 # color scheme
 import colors
@@ -37,7 +29,44 @@ font_icons = "Font Awesome 6 Free Solid"
 # Apps
 terminal = "alacritty"
 browser = "firefox"
+files_browser = "pcmanfm"
+# music_player = "com.spotify.Client"
+music_player = "dev.alextren.Spot"
 pulse_app = "pavucontrol"
+calendar = "gsimplecal"
+
+# layout settings
+layout_settings = {
+    "border_width": 2,
+    "margin": 5,
+    "border_focus": theme["primary_dark"],
+    "border_normal": theme["bg"],
+    "font": font_base,
+    "grow_amount": 4,
+}
+# labels = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"]
+# labels = ["", "", "", "", "", "", "阮", "", "", ""]
+labels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+
+# Keyboard layout
+# QWERTY
+# group_keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
+
+# AZERTY
+group_keys = [
+    "ampersand",
+    "eacute",
+    "quotedbl",
+    "apostrophe",
+    "parenleft",
+    "minus",
+    "egrave",
+    "underscore",
+    "ccedilla",
+    "agrave",
+    "parenright",
+    "equal",
+]
 
 # widget settings
 lang = "fr"
@@ -52,23 +81,12 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
-# layout settings
-layout_settings = {
-    "border_width": 2,
-    "margin": 5,
-    "border_focus": theme["primary_dark"],
-    "border_normal": theme["bg"],
-    "font": font_base,
-    "grow_amount": 4,
-}
-labels = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"]
-
 # bars settings
 main_bar_height = 26
-secondary_bar_height = 18
+secondary_bar_height = 20
 
 # general settings
-home = os.path.expanduser("~")
+HOME = os.path.expanduser("~")
 wmname = "LG3D"
 auto_fullscreen = True
 bring_front_click = False
@@ -81,61 +99,54 @@ reconfigure_screens = True
 auto_minimize = True
 
 
-# functions
-def open_calendar():  # spawn calendar widget
-    qtile.cmd_spawn("gsimplecal")
-
-
-def close_calendar():  # kill calendar widget
-    qtile.cmd_spawn("killall -q gsimplecal")
-
-
-def show_weather():
-    qtile.cmd_spawn(f"{terminal} --hold -t 'Wttr-Weather' -e wttr {list(wttr_loc.values())[0]}")
-
-
 #
 # HOOKS
 #
 @hook.subscribe.startup
 def autostart():
-    home = os.path.expanduser("~/.config/qtile/autostart.sh")
-    subprocess.call([home])
+    subprocess.call([HOME + "/.config/qtile/autostart.sh"])
 
-# Swallow ?
-# import psutil
 
+@hook.subscribe.client_new
+async def move_client(client):
+    await asyncio.sleep(0.01)
+    if client.name == "Spotify":
+        client.togroup("8")
+
+
+# # Move Gsimplecal under the clock widget
 # @hook.subscribe.client_new
-# def _swallow(window):
-#     pid = window.window.get_net_wm_pid()
-#     ppid = psutil.Process(pid).ppid()
-#     cpids = {c.window.get_net_wm_pid(): wid for wid, c in window.qtile.windows_map.items()}
-#     for i in range(5):
-#         if not ppid:
-#             return
-#         if ppid in cpids:
-#             parent = window.qtile.windows_map.get(cpids[ppid])
-#             parent.minimized = True
-#             window.parent = parent
-#             return
-#         ppid = psutil.Process(ppid).ppid()
-
-# @hook.subscribe.client_killed
-# def _unswallow(window):
-#     if hasattr(window, 'parent'):
-#         window.parent.minimized = False
+# def set_gsimplecal_floating(c):
+#     # set floating immediately so it doesn't change tiling windows temporarily
+#     if c.name == "gsimplecal":
+#         c.cmd_enable_floating()
+#
+#
+# @hook.subscribe.client_managed
+# def set_gsimplecal_position(c):
+#     if c.name == "gsimplecal":
+#         c.cmd_set_size_floating(100, 100)
+#         c.cmd_set_position_floating(2285, 26)
 
 
 #
 # KEYBINDS
 #
 keys = [
-    Key([mod], "f",
-        lazy.window.toggle_fullscreen(),
-        desc="toggle Fullscreen"
+    Key([mod], "q",
+        lazy.window.kill(),
+        desc="Kill focused window"
+    ),
+    Key([mod, "control"], "r",
+        lazy.restart(),
+        desc="Restart Qtile"
+    ),
+    Key([mod, "control"], "q",
+        lazy.shutdown(),
+        desc="Shutdown Qtile"
     ),
 
-    # LAYOUTS
+    # Layouts
     Key([mod], "Tab",
         lazy.next_layout(),
         desc="Toggle between layouts"
@@ -144,10 +155,19 @@ keys = [
         lazy.layout.flip(),
         desc="Flip layout"
     ),
+    Key([mod], "f",
+        lazy.window.toggle_fullscreen(),
+        desc="toggle Fullscreen"
+    ),
     Key([mod], "t",
         lazy.window.toggle_floating(),
         desc="Toggle Floating",
     ),
+    Key([mod], "m",
+        lazy.window.toggle_maximize(),
+        desc="Toggle Maximize",
+    ),
+
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
     Key([mod, "control"], "Left",
@@ -220,25 +240,6 @@ keys = [
         lazy.layout.shuffle_up(),
         desc="Move window up"
     ),
-
-    Key([mod], "q",
-        lazy.window.kill(),
-        desc="Kill focused window"
-    ),
-    Key([mod, "control"], "r",
-        lazy.restart(),
-        desc="Restart Qtile"
-    ),
-    Key([mod, "control"], "q",
-        lazy.shutdown(),
-        desc="Shutdown Qtile"
-    ),
-
-    # APPLICATIONS
-    Key([mod], "Return",
-        lazy.spawn(terminal),
-        desc="Launch terminal"
-    ),
 ]
 
 
@@ -259,6 +260,9 @@ mouse = [
     ),
 ]
 
+#
+# LAYOUTS
+#
 layouts = [
     layout.Max(),
     layout.MonadTall(
@@ -280,70 +284,54 @@ layouts = [
     # layout.Zoomy(**layout_theme),
 ]
 
-# floating_layout = layout.Floating(
-#     **layout_settings,
-#     float_rules=[
-#         # Run the utility of `xprop` to see the wm class and name of an X client.
-#         *layout.Floating.default_float_rules,
-#         Match(title="weather"),
-#         Match(title="branchdialog"),  # gitk
-#         Match(title="pinentry"),  # GPG key password entry
-#         Match(title="Open File"),
-#         Match(title="Unlock Database - KeePassXC"),  # Wayland
-#         Match(title="File Operation Progress", wm_class="thunar"),  # Wayland
-#         Match(title="Friends List", wm_class="Steam"),
-#         Match(wm_class="confirmreset"),  # gitk
-#         Match(wm_class="makebranch"),  # gitk
-#         Match(wm_class="maketag"),  # gitk
-#         Match(wm_class="ssh-askpass"),  # ssh-askpass
-#         Match(wm_class="Arandr"),
-#         Match(wm_class="QjackCtl"),
-#         Match(wm_class="org.kde.ark"),
-#         Match(wm_class="confirm"),
-#         Match(wm_class="dialog"),
-#         Match(wm_class="download"),
-#         Match(wm_class="error"),
-#         Match(wm_class="fiji-Main"),
-#         Match(wm_class="file_progress"),
-#         Match(wm_class="imv"),
-#         Match(wm_class="lxappearance"),
-#         Match(wm_class="mpv"),
-#         Match(wm_class="notification"),
-#         Match(wm_class="pavucontrol"),
-#         Match(wm_class="Pinentry-gtk-2"),
-#         Match(wm_class="qt5ct"),
-#         Match(wm_class="ssh-askpass"),
-#         Match(wm_class="Dragon"),
-#         Match(wm_class="Dragon-drag-and-drop"),
-#         Match(wm_class="toolbar"),
-#         Match(wm_class="wlroots"),
-#         Match(wm_class="Xephyr"),
-#         Match(wm_class="yad"),
-#         Match(wm_class="nvidia-settings"),
-#         Match(wm_type='utility'),
-#         Match(wm_type='notification'),
-#         Match(wm_type='toolbar'),
-#         Match(wm_type='splash'),
-#         Match(wm_type='dialog'),
-#         Match(role="gimp-file-export"),
-#         Match(func=lambda c: c.has_fixed_size()),
-#         Match(func=lambda c: bool(c.is_transient_for())),
-#     ]
-# )
-
-
 floating_layout = layout.Floating(
     **layout_settings,
     float_rules=[
-        # Run the utility of `xprop` to see the wm class and name of an X client.
+        # Run the utility of `xprop`
+        # to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
-        Match(title="Wttr-Weather"),
-        # Match(wm_class="confirmreset"),  # gitk
-        # Match(wm_class="makebranch"),  # gitk
-        # Match(wm_class="maketag"),  # gitk
-        # Match(wm_class="ssh-askpass"),  # ssh-askpass
-        # Match(title="branchdialog"),  # gitk
-        # Match(title="pinentry"),  # GPG key password entry
+        Match(title="branchdialog"),  # gitk
+        Match(title="pinentry"),  # GPG key password entry
+        Match(title="Open File"),
+        Match(title="Unlock Database - KeePassXC"),  # Wayland
+        Match(title="File Operation Progress", wm_class="thunar"),  # Wayland
+        Match(title="Friends List", wm_class="Steam"),
+        Match(wm_class="confirmreset"),  # gitk
+        Match(wm_class="makebranch"),  # gitk
+        Match(wm_class="maketag"),  # gitk
+        Match(wm_class="ssh-askpass"),  # ssh-askpass
+        Match(wm_class="Arandr"),
+        Match(wm_class="QjackCtl"),
+        Match(wm_class="org.kde.ark"),
+        Match(wm_class="confirm"),
+        Match(wm_class="dialog"),
+        Match(wm_class="download"),
+        Match(wm_class="error"),
+        Match(wm_class="fiji-Main"),
+        Match(wm_class="file_progress"),
+        Match(wm_class="imv"),
+        Match(wm_class="lxappearance"),
+        Match(wm_class="mpv"),
+        Match(wm_class="notification"),
+        Match(wm_class="pavucontrol"),
+        Match(wm_class="Pinentry-gtk-2"),
+        Match(wm_class="qt5ct"),
+        Match(wm_class="ssh-askpass"),
+        Match(wm_class="Dragon"),
+        Match(wm_class="Dragon-drag-and-drop"),
+        Match(wm_class="toolbar"),
+        Match(wm_class="wlroots"),
+        Match(wm_class="Xephyr"),
+        Match(wm_class="yad"),
+        Match(wm_class="nvidia-settings"),
+        Match(wm_type='utility'),
+        Match(wm_type='notification'),
+        Match(wm_type='toolbar'),
+        Match(wm_type='splash'),
+        Match(wm_type='dialog'),
+        Match(role="gimp-file-export"),
+        Match(func=lambda c: c.has_fixed_size()),
+        Match(func=lambda c: bool(c.is_transient_for())),
     ]
 )
 
@@ -353,71 +341,60 @@ floating_layout = layout.Floating(
 #
 groups = [
     Group("1",
-        label=labels[0],
-        layout="max"),
+          label=labels[0],
+          layout="max",
+          # matches=[Match(wm_class=[])]
+    ),
     Group("2",
-        label=labels[1],
-        layout="max"
+          label=labels[1],
+          layout="max",
+          # matches=[Match(wm_class=[])]
     ),
     Group("3",
-        label=labels[2],
-        layout="max",
-        matches=[Match(wm_class=["Geany"])]
+          label=labels[2],
+          layout="max",
+          # matches=[Match(wm_class=[])]
     ),
     Group("4",
-        label=labels[3],
-        layout="monadtall"
+          label=labels[3],
+          layout="max",
+          matches=[Match(wm_class=["Steam", "Lutris", "Bottles"])]
     ),
     Group("5",
-        label=labels[4],
-        layout="monadtall"
+          label=labels[4],
+          layout="monadtall",
+          # matches=[Match(wm_class=[])]
     ),
     Group("6",
-        label=labels[5],
-        layout="monadtall"
+          label=labels[5],
+          layout="monadtall",
+          # matches=[Match(wm_class=[])]
     ),
     Group("7",
-        label=labels[6],
-        layout="monadtall"
+          label=labels[6],
+          layout="monadtall",
+          # matches=[Match(wm_class=[])]
     ),
     Group("8",
-        label=labels[7],
-        layout="max",
-        matches=[Match(wm_class=["Guitarix"])]
+          label=labels[7],
+          layout="max",
+          matches=[Match(wm_class=["Guitarix"])]
     ),
     Group("9",
-        label=labels[8],
-        layout="max",
-        matches=[Match(wm_class=["Spotify"])]
+          label=labels[8],
+          layout="max",
+          matches=[Match(wm_class=["Spotify"])]
     ),
     Group("10",
-        label=labels[9],
-        layout="max",
-        matches=[Match(wm_class=["jellyfinmediaplayer"])]
+          label=labels[9],
+          layout="max",
+          matches=[Match(wm_class=["jellyfinmediaplayer"])]
     ),
 ]
 
-# QWERTY
-# group_keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
-
-# AZERTY
-group_keys = [
-    "ampersand",
-    "eacute",
-    "quotedbl",
-    "apostrophe",
-    "parenleft",
-    "minus",
-    "egrave",
-    "underscore",
-    "ccedilla",
-    "agrave",
-    # "parenright",
-    # "equal",
-]
 
 #
-# GROUPS BINDING
+# GROUPS BINDINGS
 #
 for k, group in zip(group_keys, groups):
     keys.append(
@@ -437,32 +414,70 @@ for k, group in zip(group_keys, groups):
         )
     )
 
+#
+# SCRATCHPADS
+#
+groups.append(
+    ScratchPad('scratchpad', [
+        DropDown('calendar', calendar,
+            # width=0.9, height=0,
+            x=0.892, y=0,
+            opacity=1
+        ),
+        DropDown('term', terminal,
+            width=0.8, height=0.5,
+            opacity=0.9,
+        ),
+        DropDown('mixer', pulse_app,
+            width=0.4, height=0.6,
+            x=0.59, y=0,
+            on_focus_lost_hide=True,
+            warp_pointer=True,
+            opacity=1
+        ),
+        DropDown('music', music_player,
+            width=0.8, height=0.8,
+            match="Spotify"
+            # x=0.4, y=0.2, opacity=1
+        ),
+        DropDown('files', files_browser,
+            width=0.8, height=0.8,
+            opacity=1,
+        ),
+        # DropDown('bitwarden', 'bitwarden-desktop',
+        #     # width=0.4, height=0.6, x=0.3, y=0.1, opacity=1
+        # ),
+]))
 
-# # Append scratchpad with dropdowns to groups
-# groups.append(ScratchPad('scratchpad', [
-#     DropDown('term', 'kitty', width=0.4, height=0.5, x=0.3, y=0.1, opacity=1),
-#     DropDown('mixer', 'pavucontrol', width=0.4,
-#              height=0.6, x=0.3, y=0.1, opacity=1),
-#     DropDown('pomo', 'pomotroid', x=0.4, y=0.2, opacity=1),
-#     DropDown('bitwarden', 'bitwarden-desktop',
-#              width=0.4, height=0.6, x=0.3, y=0.1, opacity=1),
-# ]))
-# # extend keys list with keybinding for scratchpad
-# keys.extend([
-#     Key(["control"], "1", lazy.group['scratchpad'].dropdown_toggle('term')),
-#     Key(["control"], "2", lazy.group['scratchpad'].dropdown_toggle('mixer')),
-#     Key(["control"], "3", lazy.group['scratchpad'].dropdown_toggle('pomo')),
-#     Key(["control"], "4", lazy.group['scratchpad'].dropdown_toggle('bitwarden')),
-# ])
+keys.extend([
+    Key(["control"], group_keys[0], # 1
+        lazy.group['scratchpad'].dropdown_toggle('term')
+    ),
+    Key(["control"], group_keys[1], # 2
+        lazy.group['scratchpad'].dropdown_toggle('mixer')
+    ),
+    Key(["control"], group_keys[2],
+        lazy.group['scratchpad'].dropdown_toggle('music')
+    ),
+    Key(["control"], group_keys[3],
+        lazy.group['scratchpad'].dropdown_toggle('files')
+    ),
+    # Key(["control"], group_keys[3],
+    #     lazy.group['scratchpad'].dropdown_toggle('bitwarden')
+    # ),
+])
 
-
-def init_bar():
-    return [
+#
+# WIDGETS
+#
+def widgets_bar(primary=False):
+    widgets = [
         GroupBox(
             padding=1,
             margin_y=3,
             borderwidth=2,
             disable_drag=True,
+            hide_unused=False,
             rounded=False,
             highlight_method="line",
             active=theme["primary"],
@@ -490,20 +505,12 @@ def init_bar():
         ),
         Spacer(length=spacer_length),
         WindowTabs(),
-        Spacer(length=spacer_length),
-        Wttr(
-            lang=lang,
-            location=wttr_loc,
-            format="%c %t (%f)",
-            units="m",
-            update_interval=600,
-            mouse_callbacks={"Button1": show_weather}
-        ),
-        Spacer(length=spacer_length),
-        HDDBusyGraph(
-            border_width=0,
-            graph_color=theme["primary"]
-        ),
+        # WindowName(
+        #     mouse_callbacks={"Button1": lazy.layout.next()}
+        # ),
+        # TaskList(
+        #     borderwidth=0,
+        # ),
         Spacer(length=spacer_length),
         TextBox(
             foreground=theme["primary"],
@@ -523,6 +530,11 @@ def init_bar():
             format="{up}"
         ),
         Spacer(length=spacer_length),
+        HDDBusyGraph(
+            border_width=0,
+            graph_color=theme["primary"]
+        ),
+        Spacer(length=spacer_length),
         TextBox(
             foreground=theme["primary"],
             text="",
@@ -531,7 +543,10 @@ def init_bar():
         PulseVolume(
             limit_max_volume="True",
             update_interval=0.1,
-            mouse_callbacks={"Button3": lambda: qtile.cmd_spawn(pulse_app)},
+            mouse_callbacks={
+                "Button3":
+                lazy.group['scratchpad'].dropdown_toggle('mixer')
+            }
         ),
         Spacer(length=spacer_length),
         TextBox(
@@ -550,9 +565,16 @@ def init_bar():
             foreground=theme["primary"],
         ),
         Memory(
-            format="{MemPercent: .0f} % {SwapUsed: .0f}{mm}",
-            # format="{MemUsed: .0f}{mm}",
+            format="{MemPercent: .0f} %",
             measure_mem="G"
+        ),
+        Spacer(length=spacer_length),
+        Wttr(
+            lang=lang,
+            location=wttr_loc,
+            format="%c %t (%f)",
+            units="m",
+            update_interval=600,
         ),
         Spacer(length=spacer_length),
         TextBox(
@@ -562,32 +584,31 @@ def init_bar():
         ),
         Clock(
             format="%a %d %b %H:%M:%S",
-            mouse_callbacks={'Button1': open_calendar, 'Button2': close_calendar}
+            mouse_callbacks={
+                "Button1":
+                lazy.group['scratchpad'].dropdown_toggle('calendar')
+            }
         ),
-        Spacer(length=spacer_length),
-        # Systray(),
-        # Spacer(length=spacer_length),
     ]
+    if primary:
+        widgets.append(Systray())
 
+    widgets.append(Spacer(length=spacer_length))
+    return widgets
 
-systray = [
-    Systray(),
-    Spacer(length=spacer_length),
-]
-
-main_bar = init_bar() + systray
-second_bar = init_bar()
-
+#
+# SCREENS
+#
 screens = [
     Screen(
         top=bar.Bar(
-            main_bar,
+            widgets_bar(primary=True),
             size=main_bar_height
         )
     ),
     Screen(
         top=bar.Bar(
-            second_bar,
+            widgets_bar(primary=False),
             size=secondary_bar_height
         )
     ),

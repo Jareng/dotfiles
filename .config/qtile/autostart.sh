@@ -1,29 +1,25 @@
 #!/bin/bash
 
-check_if_running () {
-    if ! pgrep -x $1 > /dev/null
-    then
-        echo "> $1"
-        case $1 in
-
-            picom)
-                $1 -b --config ~/.config/picom/picom.conf &
-                ;;
-
-            *)
-                $1 &
-                ;;
-        esac
-    fi
+function is_running {
+  # grab the first word of a string
+  set -- $1
+  # if process is not running
+  if ! pgrep -x $1 > /dev/null; then
+    echo "$1 is not running"
+    $* &
+  fi
+  return 0
 }
 
-allApps=(
-    "dunst"
-    "sxhkd"
-    "picom"
+apps=(
+  "dunst"
+  "sxhkd"
+  "nitrogen --restore"
+  "unclutter --timeout 2"
+  "picom --experimental-backends -b --config /home/$(whoami)/.config/picom/picom.conf"
 )
 
-for APP in ${allApps[@]}
-do
-    check_if_running "$APP"
+# Need "" around ${apps[@]} so it take the full string
+for app in "${apps[@]}"; do
+  is_running "$app"
 done
