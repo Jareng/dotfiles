@@ -1,7 +1,15 @@
+window {
+  width: 10%;
+}
+
 inputbar {
   children: [entry];
 }
 
 listview {
-	lines: 3;
+	lines: 4;
+}
+
+element {
+  children: [ element-text ];
 }
