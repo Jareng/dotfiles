@@ -17,23 +17,23 @@
     #
     # If this option is set to mouse or keyboard, the monitor option
     # will be ignored.
-    follow = none
+    follow = mouse
 
     ### Geometry ###
 
     # dynamic width from 0 to 300
     # width = (0, 300)
     # constant width of 300
-    width = (0, 400)
+    width = (0, 500)
 
     # The maximum height of a single notification, excluding the frame.
-    height = 300
+    height = 500
 
     # Position the notification in the top right corner
     origin = top-right
 
     # Offset from the origin
-    offset = 10x120
+    offset = 10x80
 
     # Scale factor. It is auto-detected if value is 0.
     scale = 0
@@ -59,7 +59,6 @@
 
     # Set the maximum width for the progress bar
     progress_bar_max_width = 300
-
 
     # Show how many messages are currently hidden (because of
     # notification_limit).
@@ -291,7 +290,6 @@
     # using the resolution and physical size. This might be useful in setups
     # where there are multiple screens with very different dpi values.
     per_monitor_dpi = false
-
 
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
