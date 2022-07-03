@@ -5,10 +5,13 @@ super + r
   rofi -show drun
 
 super + shift + e
-  rofi -show emoji
+  rofi -show emoji -theme-str "#element-icon \{ enabled: false; \}"
+
+super + shift + p
+  powermenu
 
 # dmenu
-super + shift + r
+super + p
   dmenu_run
 
 # printscreen
@@ -44,9 +47,6 @@ XF86AudioMute
 super + control + shift + p
   systemctl suspend
 
-super + shift + p
-  powermenu
-
 # notifications
 ctrl + space
   dunstctl close
@@ -59,10 +59,4 @@ ctrl + shift + period
 
 # Apps
 super + Return
-  alacritty
-
-super + v
-  pcmanfm
-
-super + b
-  firefox
+  $TERMINAL
