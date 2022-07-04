@@ -1,16 +1,34 @@
 #!/bin/sh
 
-# Export
+# Extend PATH.
 export PATH="${PATH}:/home/$(whoami)/.scripts"
 
+export TERM="xterm-256color"
+export EDITOR="nvim"
+export VISUAL="nvim"
+export TERMINAL="kitty"
+export BROWSER="firefox"
+export FILE_MANAGER="nemo"
+export CODEEDITOR="vscode"
+export OPENER="xdg-open"
+export PAGER="less"
+export WM="qtile"
+## Bat Manpager
+# export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+## Neovim Manpager
+export MANPAGER="sh -c \"col -b | nvim -c 'set ft=man ts=8 nomod nolist nonu' -c 'nnoremap i <nop>' -\""
+
 # Settings
-xset s off &
+~/.screenlayout/monitor.sh &
+xset s off
 setxkbmap fr
 
 # Apps
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-picom --experimental-backends -b --config ~/.config/picom/picom.conf
+picom --experimental-backends -b --config ~/.config/picom/picom.conf &
 sxhkd &
-nitrogen --restore
 dunst &
+nitrogen --restore &
 unclutter --timeout 2 &
+udiskie -A --notify --smart-tray &
+nm-applet &
