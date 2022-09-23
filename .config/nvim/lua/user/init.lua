@@ -205,20 +205,20 @@ local config = {
       --   end,
       -- },
       -- TokyoNight
-      { "folke/tokyonight.nvim" },
-      -- sxhkdrc colors
-      { "baskerville/vim-sxhkdrc" },
-      -- treesitter-context
+      -- { "folke/tokyonight.nvim" },
+      -- -- sxhkdrc colors
+      -- { "baskerville/vim-sxhkdrc" },
+      -- -- treesitter-context
       {
         "nvim-treesitter/nvim-treesitter-context",
         requires = { "nvim-treesitter/nvim-treesitter" },
       },
-      -- rasi
-      {
-        "Fymyte/rasi.vim",
-        ft = { "rasi" },
-        requires = { "nvim-treesitter/nvim-treesitter" },
-      },
+      -- -- rasi
+      -- {
+      --   "Fymyte/rasi.vim",
+      --   ft = { "rasi" },
+      --   requires = { "nvim-treesitter/nvim-treesitter" },
+      -- },
       -- kitty
       { "fladson/vim-kitty" },
       -- trim trailling spaces
@@ -263,7 +263,7 @@ local config = {
       return config -- return final config table to use in require("null-ls").setup(config)
     end,
     treesitter = { -- overrides `require("treesitter").setup(...)`
-      ensure_installed = { "lua" },
+      ensure_installed = { "lua", "bash", "python", "toml", "json", "yaml", "sxhkdrc", "rasi" },
     },
     -- use mason-lspconfig to configure LSP installations
     ["mason-lspconfig"] = { -- overrides `require("mason-lspconfig").setup(...)`
@@ -345,7 +345,7 @@ local config = {
       },
       pattern = {
         -- ["~/%.config/foo/.*"] = "fooscript",
-        [".*/.config/kitty/.*%.conf"] = "kitty",
+        -- [".*/.config/kitty/.*%.conf"] = "kitty",
       },
     }
   end,
