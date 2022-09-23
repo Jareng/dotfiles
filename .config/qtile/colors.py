@@ -1,12 +1,12 @@
 def set_default():
-    default = perso
+    default = fjord
     return default
 
-perso = {
+fjord = {
     "primary":      "#81A1C1",
     "primary_dark": "#5E81AC",
-    "bg":           "#1E222A",
-    "bg_light":     "#282E3B",
+    "bg":           "#1e222a",
+    "bg_light":     "#303742",
     "fg":           "#B3B8C3",
     "red":          "#BF616A",
     "orange":       "#D08770",
@@ -19,21 +19,21 @@ perso = {
     "grey":         "#4C566A",
 }
 
-test = {
-    "primary":      "#81A1C1",
-    "primary_dark": "#5E81AC",
-    "bg":           "#1E222A",
-    "bg_light":     "#282E3B",
-    "fg":           "#b3b8c3",
-    "red":          "#E44754",
-    "orange":       "#D08770",
-    "green":        "#89BD82",
-    "yellow":       "#F7BD51",
-    "blue":         "#5486C0",
-    "magenta":      "#B77EB8",
-    "cyan":         "#50A5A4",
-    "white":        "#FFFFFF",
-    "grey":         "#b3b8c3",
+astronvim = {
+    "primary":      "#90c7f3",
+    "primary_dark": "#8094B4",
+    "bg":           "#1e222a",
+    "bg_light":     "#303742",
+    "fg":           "#abb2bf",
+    "red":          "#e06c75",
+    "orange":       "#d19a66",
+    "green":        "#98c379",
+    "yellow":       "#e5c07b",
+    "blue":         "#61afef",
+    "magenta":      "#c678dd",
+    "cyan":         "#56b6c2",
+    "white":        "#dedede",
+    "grey":         "#5c6370",
 }
 
 nord = {

@@ -23,16 +23,16 @@ font_base = "NotoSans Nerd Font Bold"
 font_icons = "Font Awesome 6 Free Solid"
 
 # Apps
-# terminal = os.getenv("TERMINAL")
-terminal = "kitty"
-browser = "firefox"
-tui_filesmanager = "ranger"
-gui_filesmanager = "nemo"
-# music_player = "com.spotify.Client"
-music_player = "dev.alextren.Spot"
-pulse_app = "pavucontrol"
-calendar = "gsimplecal"
-password_manager = "keepassxc"
+# myTerminal = os.getenv("TERMINAL")
+myTerminal = "alacritty"
+myBrowser = "firefox"
+myFileManagerTUI = "ranger"
+myFileManagerGUI = "nemo"
+# myMusicPlayer = "com.spotify.Client"
+myMusicPlayer = "dev.alextren.Spot"
+myMixer = "pavucontrol"
+mymyCalendar = "gsimplecal"
+myPasswordManager = "keepassxc"
 
 # general settings
 HOME = os.path.expanduser("~")
@@ -47,6 +47,13 @@ follow_mouse_focus = True
 reconfigure_screens = True
 auto_minimize = True
 
+if qtile.core.name == "wayland":
+    from libqtile.backend.wayland import InputConfig
+
+    wl_input_rules = {
+        "type:keyboard": InputConfig(kb_layout="fr"),
+    }
+
 #
 # HOOKS
 #
@@ -58,14 +65,14 @@ auto_minimize = True
     #     qtile.cmd_simulate_keypress(["control"], "equal")
     #
     # qtile.cmd_spawn("easyeffects")
-    # qtile.cmd_spawn(terminal).togroup("5")
-    # qtile.cmd_spawn(gui_filesmanager)
+    # qtile.cmd_spawn(myTerminal).togroup("5")
+    # qtile.cmd_spawn(myFileManagerGUI)
     # sc_startup()
 
 @hook.subscribe.startup
 def autostart():
     subprocess.call([HOME + "/.config/qtile/autostart.sh"])
-    # qtile.cmd_simulate_keypress(["mod1"], "equal")
+    # qtile.cmd_simulate_keypress([alt], "equal")
 
 # @hook.subscribe.startup_complete
 # def scratchpad_startup() -> None:
@@ -78,52 +85,54 @@ def autostart():
 #     ) in scratchpad._dropdownconfig.items():
 #         scratchpad._spawn(dropdown_config)
 
-@hook.subscribe.startup_complete
-def scratchpad_startup():
-    scratchpad: ScratchPad = qtile.groups_map["scratchpad"]
-    for dropdown_name, dropdown_config in scratchpad._dropdownconfig.items():
-        scratchpad._spawn(dropdown_config)
-        def wrapper(name):
-            def hide_dropdown(_):
-                dropdown = scratchpad.dropdowns.get(name)
-                if dropdown:
-                    dropdown.hide()
-                    hook.unsubscribe.client_managed(hide_dropdown)
-            return hide_dropdown
-
-        hook.subscribe.client_managed(wrapper(dropdown_name))
+# # Launch all scratchpad at start
+# @hook.subscribe.startup_complete
+# def scratchpad_startup():
+#     scratchpad: ScratchPad = qtile.groups_map["scratchpad"]
+#     for dropdown_name, dropdown_config in scratchpad._dropdownconfig.items():
+#         scratchpad._spawn(dropdown_config)
+#         def wrapper(name):
+#             def hide_dropdown(_):
+#                 dropdown = scratchpad.dropdowns.get(name)
+#                 if dropdown:
+#                     dropdown.hide()
+#                     hook.unsubscribe.client_managed(hide_dropdown)
+#             return hide_dropdown
+#
+#         hook.subscribe.client_managed(wrapper(dropdown_name))
 
 @hook.subscribe.client_new
 async def move_client(client):
     await asyncio.sleep(0.01)
+    # Move spotify to workspace 8
     if client.name == "Spotify":
         client.togroup("8")
 
 #
 # FUNCTIONS
 #
-def mpris_control(cmd):
-    dbus = "dbus-send --print-reply"
-    dest = "--dest=org.mpris.MediaPlayer2.spotify"
-    mpris_cmd = "/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player"
-    full_path = f"{dbus} {dest} {mpris_cmd}"
-
-    if (cmd == "PlayPause"):
-        full_cmd = f"{full_path}.{cmd}"
-    elif (cmd == "Previous"):
-        full_cmd = f"{full_path}.{cmd}"
-    elif (cmd == "Next"):
-        full_cmd = f"{full_path}.{cmd}"
-    else:
-        return
-
-    return full_cmd
+# def mpris_control(cmd):
+#     dbus = "dbus-send --print-reply"
+#     dest = "--dest=org.mpris.MediaPlayer2.spotify"
+#     mpris_cmd = "/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player"
+#     full_path = f"{dbus} {dest} {mpris_cmd}"
+#
+#     if (cmd == "PlayPause"):
+#         full_cmd = f"{full_path}.{cmd}"
+#     elif (cmd == "Previous"):
+#         full_cmd = f"{full_path}.{cmd}"
+#     elif (cmd == "Next"):
+#         full_cmd = f"{full_path}.{cmd}"
+#     else:
+#         return
+#
+#     return full_cmd
 
 #
 # KEYBINDS
 #
 keys = [
-    Key([mod], "q",
+    Key([mod], "c",
         lazy.window.kill(),
         desc="Kill focused window"
     ),
@@ -267,23 +276,20 @@ mouse = [
 #
 # LAYOUTS
 #
-layout_settings = {
-    "border_width": 1,
-    "margin": 5,
-    "border_focus": theme["primary_dark"],
-    "border_normal": theme["bg"],
-    "font": font_base,
-    "grow_amount": 4,
-}
+layout_settings = dict(
+    border_width=1,
+    margin=10,
+    border_focus=theme["primary_dark"],
+    border_normal=theme["bg"],
+    font=font_base,
+    grow_amount=4,
+    single_border_width=0,
+    single_margin=0,
+)
 
 layouts = [
     layout.Max(),
-    layout.MonadTall(
-        **layout_settings,
-        # ratio=0.60,
-        single_border_width=0,
-        single_margin=0,
-    ),
+    layout.MonadTall(**layout_settings),
 ]
 
 floating_layout = layout.Floating(
@@ -345,7 +351,7 @@ groups = [
           label=groups_labels[2],
           layout="max",
           matches=[Match(wm_class=["nemo", "thunar", "pcmanfm"])],
-          spawn=[gui_filesmanager]
+          spawn=[myFileManagerGUI]
     ),
     Group("4",
           label=groups_labels[3],
@@ -356,7 +362,7 @@ groups = [
           label=groups_labels[4],
           layout="monadtall",
           # matches=[Match(wm_class=[])],
-          spawn=[terminal]
+          spawn=[myTerminal]
     ),
     Group("6",
           label=groups_labels[5],
@@ -391,7 +397,7 @@ groups = [
 #
 for key, group in zip(groups_keys, groups):
     keys.append(
-        # mod1 + letter of group = switch to group
+        # mod + letter of group = switch to group
         Key(
             [mod], (key),
             lazy.group[group.name].toscreen(),
@@ -399,7 +405,7 @@ for key, group in zip(groups_keys, groups):
         )
     )
     keys.append(
-        # mod1 + shift + letter of group = move focused window to group
+        # mod + shift + letter of group = move focused window to group
         Key(
             [mod, "shift"], (key),
             lazy.window.togroup(group.name),
@@ -412,7 +418,7 @@ for key, group in zip(groups_keys, groups):
 #
 groups.append(
     ScratchPad("scratchpad", [
-        DropDown("terminal", terminal,
+        DropDown("terminal", myTerminal,
             width=0.9, height=0.5,
             x=0.05,
         ),
@@ -422,26 +428,26 @@ groups.append(
             x=0.05, y=0,
             opacity=1,
         ),
-        DropDown("ranger", f"{terminal} -e {tui_filesmanager}",
+        DropDown("ranger", f"{myTerminal} -e {myFileManagerTUI}",
             width=0.8, height=0.8,
             x=0.1, y=0,
         ),
-        # DropDown("qtile shell", f"{terminal} -e qtile shell",
+        # DropDown("qtile shell", f"{myTerminal} -e qtile shell",
         #     width=0.9, height=0.9,
         #     x=0.05,
         #     opacity=1
         # ),
-        DropDown("password_manager", password_manager,
+        DropDown("password_manager", myPasswordManager,
             match=Match(wm_class="KeePassXC"),
             width=0.9, height=0.9,
             x=0.05,
             opacity=1
         ),
-        DropDown("calendar", calendar,
+        DropDown("calendar", myCalendar,
             # width=0.9, height=0,
             x=0.892, y=0,
         ),
-        DropDown("pulse_app", pulse_app,
+        DropDown("mixer", myMixer,
             width=0.4, height=0.6,
             x=0.59, y=0,
             opacity=1,
@@ -485,7 +491,7 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
-def widgets_bar(primary=False):
+def widgets_list(primary=False):
     widgets = [
         GroupBox(
             padding=3,
@@ -544,24 +550,17 @@ def widgets_bar(primary=False):
             format="{up}"
         ),
         Spacer(length=spacer_length),
-        # TextBox(
-        #     foreground=theme["primary"],
-        #     text="",
-        #     font=font_icons,
-        # ),
+        TextBox(
+            foreground=theme["primary"],
+            text="",
+            font=font_icons,
+        ),
         Mpris2(
             name="com.spotify.Client",
             # scroll_chars=None,
             scroll_interval=None,
             display_metadata=["xesam:title", "xesam:artist"],
-            playing_text="ﱘ {track}",
-            paused_text="ﱙ {track}",
             objname="org.mpris.MediaPlayer2.spotify",
-            mouse_callbacks={
-                "Button1": lazy.spawn(mpris_control("Previous")),
-                "Button2": lazy.spawn(mpris_control("PlayPause")),
-                "Button3": lazy.spawn(mpris_control("Next")),
-            }
         ),
         Spacer(length=spacer_length),
         HDDBusyGraph(
@@ -579,7 +578,7 @@ def widgets_bar(primary=False):
             update_interval=0.1,
             mouse_callbacks={
                 "Button3":
-                lazy.group["scratchpad"].dropdown_toggle("pulse_app")
+                lazy.group["scratchpad"].dropdown_toggle("mixer")
             }
         ),
         Spacer(length=spacer_length),
@@ -623,12 +622,37 @@ def widgets_bar(primary=False):
                 lazy.group["scratchpad"].dropdown_toggle("calendar")
             }
         ),
+        Spacer(length=spacer_length),
     ]
-    if primary:
-        widgets.append(Systray())
 
-    widgets.append(Spacer(length=spacer_length))
+    if primary:
+        # Clock mouse_callbacks doesn't work if i insert this before ??
+        # pos = len(widgets) - 4
+        # widgets[pos:pos] = [
+        #     Systray(),
+        #     Spacer(length=spacer_length),
+        # ]
+        widgets.extend([
+            Systray(),
+            Spacer(length=spacer_length),
+        ])
+
+    # widgets.extend([
+    #     Spacer(length=spacer_length),
+    # ])
+
     return widgets
+
+# def widgets_monitor1():
+#     widget_monitor1 = widgets_list(primary=True)
+#     return widget_monitor1
+#
+# def widgets_monitor2():
+#     widget_monitor2 = widgets_list(primary=False)
+#     return widget_monitor2
+#
+# widgets_monitor1 = widgets_monitor1()
+# widgets_monitor2 = widgets_monitor2()
 
 #
 # SCREENS
@@ -636,13 +660,15 @@ def widgets_bar(primary=False):
 screens = [
     Screen(
         top=bar.Bar(
-            widgets_bar(primary=True),
+            # widgets_monitor1,
+            widgets_list(primary=True),
             size=26
         )
     ),
     Screen(
         top=bar.Bar(
-            widgets_bar(primary=False),
+            # widgets_monitor2,
+            widgets_list(primary=False),
             size=20
         )
     ),

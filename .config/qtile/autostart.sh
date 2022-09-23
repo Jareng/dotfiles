@@ -6,17 +6,17 @@ function is_running {
   # if process is not running
   if ! pgrep -x $1 > /dev/null; then
     echo "$1 is not running"
-    $* &
+    $*
   fi
   return 0
 }
 
 apps=(
-  "dunst"
-  "sxhkd"
+  "dunst &"
+  "sxhkd &"
   "nitrogen --restore"
-  "unclutter --timeout 2"
-  "picom --experimental-backends -b --config /home/$(whoami)/.config/picom/picom.conf"
+  "unclutter --timeout 2 &"
+  "picom -b --config /home/$(whoami)/.config/picom/picom.conf"
 )
 
 # Need "" around ${apps[@]} so it take the full string
