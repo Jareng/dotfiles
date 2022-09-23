@@ -31,7 +31,7 @@ myFileManagerGUI = "nemo"
 # myMusicPlayer = "com.spotify.Client"
 myMusicPlayer = "dev.alextren.Spot"
 myMixer = "pavucontrol"
-mymyCalendar = "gsimplecal"
+myCalendar = "gsimplecal"
 myPasswordManager = "keepassxc"
 
 # general settings
