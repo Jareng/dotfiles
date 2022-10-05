@@ -23,13 +23,12 @@ font_base = "NotoSans Nerd Font Bold"
 font_icons = "Font Awesome 6 Free Solid"
 
 # Apps
-# myTerminal = os.getenv("TERMINAL")
-myTerminal = "alacritty"
-myBrowser = "firefox"
-myFileManagerTUI = "ranger"
-myFileManagerGUI = "nemo"
-# myMusicPlayer = "com.spotify.Client"
-myMusicPlayer = "dev.alextren.Spot"
+myTerminal = os.getenv("TERMINAL")
+# myTerminal = "alacritty"
+myBrowser = os.getenv("BROWSER")
+myFileManagerTUI = os.getenv("FILE_MANAGER_TUI")
+myFileManagerGUI = os.getenv("FILE_MANAGER_GUI")
+myCodeEditor = os.getenv("CODE_EDITOR")
 myMixer = "pavucontrol"
 myCalendar = "gsimplecal"
 myPasswordManager = "keepassxc"
@@ -54,36 +53,21 @@ if qtile.core.name == "wayland":
         "type:keyboard": InputConfig(kb_layout="fr"),
     }
 
-#
+#######################
 # HOOKS
-#
+#######################
 # @hook.subscribe.startup_once
 # def startup():
-    # async def sc_startup():
-    #     qtile.cmd_simulate_keypress(["control"], "equal")
-    #     await asyncio.sleep(0.5)
-    #     qtile.cmd_simulate_keypress(["control"], "equal")
-    #
-    # qtile.cmd_spawn("easyeffects")
-    # qtile.cmd_spawn(myTerminal).togroup("5")
-    # qtile.cmd_spawn(myFileManagerGUI)
-    # sc_startup()
+#     processes = [
+#         ["easyeffects", "--gapplication-service"],
+#     ]
+#
+#     for p in processes:
+#         subprocess.Popen(p)
 
 @hook.subscribe.startup
 def autostart():
     subprocess.call([HOME + "/.config/qtile/autostart.sh"])
-    # qtile.cmd_simulate_keypress([alt], "equal")
-
-# @hook.subscribe.startup_complete
-# def scratchpad_startup() -> None:
-#     scratchpad: ScratchPad = qtile.groups_map["scratchpad"]  # type: ignore
-#
-#     scratchpad._to_hide = scratchpad._dropdownconfig.keys()
-#     for (
-#             # dropdown_name,
-#             dropdown_config,
-#     ) in scratchpad._dropdownconfig.items():
-#         scratchpad._spawn(dropdown_config)
 
 # # Launch all scratchpad at start
 # @hook.subscribe.startup_complete
@@ -108,29 +92,9 @@ async def move_client(client):
     if client.name == "Spotify":
         client.togroup("8")
 
-#
-# FUNCTIONS
-#
-# def mpris_control(cmd):
-#     dbus = "dbus-send --print-reply"
-#     dest = "--dest=org.mpris.MediaPlayer2.spotify"
-#     mpris_cmd = "/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player"
-#     full_path = f"{dbus} {dest} {mpris_cmd}"
-#
-#     if (cmd == "PlayPause"):
-#         full_cmd = f"{full_path}.{cmd}"
-#     elif (cmd == "Previous"):
-#         full_cmd = f"{full_path}.{cmd}"
-#     elif (cmd == "Next"):
-#         full_cmd = f"{full_path}.{cmd}"
-#     else:
-#         return
-#
-#     return full_cmd
-
-#
+#######################
 # KEYBINDS
-#
+#######################
 keys = [
     Key([mod], "c",
         lazy.window.kill(),
@@ -156,7 +120,7 @@ keys = [
     ),
     Key([mod], "f",
         lazy.window.toggle_fullscreen(),
-        desc="toggle Fullscreen"
+        desc="Toggle Fullscreen"
     ),
     Key([mod], "t",
         lazy.window.toggle_floating(),
@@ -205,6 +169,10 @@ keys = [
         lazy.layout.next(),
         desc="Move window focus to other window"
     ),
+    Key([alt, "control"], "Tab",
+        lazy.next_screen(),
+        desc="Toggle between screens"
+    ),
     Key([mod], "Left",
         lazy.layout.left(),
         desc="Move focus to left"
@@ -225,7 +193,7 @@ keys = [
     # Moving out of range in Columns layout will create new column.
     Key([mod, "shift"], "Left",
         lazy.layout.shuffle_left(),
-        desc="Move window to the left"
+        desc="Move window to the left",
     ),
     Key([mod, "shift"], "Right",
         lazy.layout.shuffle_right(),
@@ -256,9 +224,9 @@ keys = [
     ),
 ]
 
-#
+#######################
 # MOUSE
-#
+#######################
 mouse = [
     Drag([mod], "Button1",
          lazy.window.set_position_floating(),
@@ -273,9 +241,9 @@ mouse = [
     ),
 ]
 
-#
+#######################
 # LAYOUTS
-#
+#######################
 layout_settings = dict(
     border_width=1,
     margin=10,
@@ -309,9 +277,9 @@ floating_layout = layout.Floating(
     border_normal=layout_settings["border_normal"]
 )
 
-#
+#######################
 # GROUPS
-#
+#######################
 # labels = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"]
 # labels = ["", "", "", "", "", "", "阮", "", "", ""]
 groups_labels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
@@ -392,9 +360,9 @@ groups = [
     ),
 ]
 
-#
+#######################
 # GROUPS BINDINGS
-#
+#######################
 for key, group in zip(groups_keys, groups):
     keys.append(
         # mod + letter of group = switch to group
@@ -413,9 +381,9 @@ for key, group in zip(groups_keys, groups):
         )
     )
 
-#
+#######################
 # SCRATCHPADS
-#
+#######################
 groups.append(
     ScratchPad("scratchpad", [
         DropDown("terminal", myTerminal,
@@ -432,11 +400,6 @@ groups.append(
             width=0.8, height=0.8,
             x=0.1, y=0,
         ),
-        # DropDown("qtile shell", f"{myTerminal} -e qtile shell",
-        #     width=0.9, height=0.9,
-        #     x=0.05,
-        #     opacity=1
-        # ),
         DropDown("password_manager", myPasswordManager,
             match=Match(wm_class="KeePassXC"),
             width=0.9, height=0.9,
@@ -452,9 +415,6 @@ groups.append(
             x=0.59, y=0,
             opacity=1,
         ),
-        # DropDown("bitwarden", "bitwarden-desktop",
-        #     # width=0.4, height=0.6, x=0.3, y=0.1, opacity=1
-        # ),
 ]))
 
 keys.extend([
@@ -467,17 +427,14 @@ keys.extend([
     Key(["control"], groups_keys[2],
         lazy.group["scratchpad"].dropdown_toggle("ranger")
     ),
-    # Key(["control"], groups_keys[10],
-    #     lazy.group["scratchpad"].dropdown_toggle("qtile shell")
-    # ),
     Key(["control"], groups_keys[11],
         lazy.group["scratchpad"].dropdown_toggle("password_manager")
     ),
 ])
 
-#
+#######################
 # WIDGETS
-#
+#######################
 # widget settings
 lang = "fr"
 wttr_loc = {"50.5199,2.64781": "Béthune"}
@@ -654,9 +611,9 @@ def widgets_list(primary=False):
 # widgets_monitor1 = widgets_monitor1()
 # widgets_monitor2 = widgets_monitor2()
 
-#
+#######################
 # SCREENS
-#
+#######################
 screens = [
     Screen(
         top=bar.Bar(
