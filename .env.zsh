@@ -54,16 +54,18 @@ export WINEPREFIX="$XDG_DATA_HOME/wine"
 export TERM="xterm-256color"
 export EDITOR="nvim"
 export VISUAL="nvim"
-export TERMINAL="alacritty"
+export TERMINAL="kitty"
 export BROWSER="firefox"
 export FILE_MANAGER="nemo"
-export CODEEDITOR="vscode"
+export FILE_MANAGER_GUI="nemo"
+export FILE_MANAGER_TUI="nemo"
+export CODE_EDITOR="vscode"
 export OPENER="xdg-open"
 export PAGER="less"
 export WM="qtile"
 # Neovim Manpager
 export MANPAGER="sh -c \"col -b | nvim -c 'set ft=man ts=8 nomod nolist nonu' -c 'nnoremap i <nop>' -\""
 
-# qt5
-export QT_QPA_PLATFORMTHEME="qt5ct"
-export QT_STYLE_OVERRIDE="kvantum"
+# # qt5
+# export QT_QPA_PLATFORMTHEME="qt5ct"
+# export QT_STYLE_OVERRIDE="kvantum"
