@@ -5,11 +5,11 @@ from libqtile import qtile, layout, hook, bar, extension
 from libqtile.command import lazy
 from libqtile.config import Key, Group, Match, Click, Drag, \
     Screen, ScratchPad, DropDown
-
-# widgets
+# from libqtile.backend.wayland import InputConfig
+from env import openweather_loc, openweather_coord, openweather_apikey, wttr_loc
 from libqtile.widget import Spacer, GroupBox, CurrentLayoutIcon, \
     TextBox, Wttr, Net, WindowTabs, PulseVolume, HDDBusyGraph, \
-    CPU, Memory, Clock, Systray, Mpris2
+    CPU, Memory, Clock, Systray, Mpris2, OpenWeather
 
 # color scheme
 from colors import theme
@@ -46,12 +46,9 @@ follow_mouse_focus = True
 reconfigure_screens = True
 auto_minimize = True
 
-if qtile.core.name == "wayland":
-    from libqtile.backend.wayland import InputConfig
-
-    wl_input_rules = {
-        "type:keyboard": InputConfig(kb_layout="fr"),
-    }
+# wl_input_rules = {
+#     "type:keyboard": InputConfig(kb_layout="fr"),
+# }
 
 #######################
 # HOOKS
@@ -107,7 +104,7 @@ keys = [
     Key([mod, "control"], "q",
         lazy.shutdown(),
         desc="Shutdown Qtile"
-        ),
+    ),
 
     # Layouts
     Key([mod], "Tab",
@@ -121,6 +118,10 @@ keys = [
     Key([mod], "f",
         lazy.window.toggle_fullscreen(),
         desc="Toggle Fullscreen"
+    ),
+    Key([mod, "shift"], "f",
+        lazy.hide_show_bar(),
+        desc="Hide/Show Bar"
     ),
     Key([mod], "t",
         lazy.window.toggle_floating(),
@@ -269,6 +270,8 @@ floating_layout = layout.Floating(
         Match(wm_class="makebranch"),  # gitk
         Match(wm_class="maketag"),  # gitk
         Match(wm_class="ssh-askpass"),  # ssh-askpass
+        # Match(wm_class="yad"),
+        Match(wm_class="mojosetup"),
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
     ],
@@ -436,8 +439,6 @@ keys.extend([
 # WIDGETS
 #######################
 # widget settings
-lang = "fr"
-wttr_loc = {"50.5199,2.64781": "Béthune"}
 spacer_length = 10
 widget_defaults = dict(
     font=font_base,
@@ -455,14 +456,14 @@ def widgets_list(primary=False):
             margin_y=3,
             borderwidth=2,
             disable_drag=True,
-            hide_unused=False,
+            hide_unused=True,
             rounded=False,
             highlight_method="line",
-            active=theme["primary"],
+            active=theme["grey"],
             inactive=theme["grey"],
             highlight_color=theme["bg_light"],
             block_highlight_text_color=theme["primary"],
-            this_current_screen_border=theme["primary_dark"],
+            this_current_screen_border=theme["green"],
             this_screen_border=theme["primary_dark"],
             other_current_screen_border=theme["grey"],
             other_screen_border=theme["grey"],
@@ -509,12 +510,11 @@ def widgets_list(primary=False):
         Spacer(length=spacer_length),
         TextBox(
             foreground=theme["primary"],
-            text="",
-            font=font_icons,
+            text="",
+            # font=font_icons,
         ),
         Mpris2(
             name="com.spotify.Client",
-            # scroll_chars=None,
             scroll_interval=None,
             display_metadata=["xesam:title", "xesam:artist"],
             objname="org.mpris.MediaPlayer2.spotify",
@@ -559,13 +559,26 @@ def widgets_list(primary=False):
             measure_mem="G"
         ),
         Spacer(length=spacer_length),
-        Wttr(
-            lang=lang,
-            location=wttr_loc,
-            format="%c %t (%f)",
-            units="m",
-            update_interval=600,
+        OpenWeather(
+            app_key=openweather_apikey,
+            coordinates=openweather_coord,
+            dateformat="%Y-%m%d ",
+            format="{icon} " \
+                   "{temp:.1f}°{units_temperature} " \
+                   "({main_feels_like:.1f}°{units_temperature}) " \
+                   "{humidity}% " \
+                   "{wind_speed:.1f}{units_wind_speed}",
+            language="fr",
+            location=openweather_loc,
+            metric=True,
         ),
+        # Wttr(
+        #     lang="fr",
+        #     location=wttr_loc,
+        #     format="%c %t (%f)",
+        #     units="m",
+        #     update_interval=600,
+        # ),
         Spacer(length=spacer_length),
         TextBox(
             foreground=theme["primary"],

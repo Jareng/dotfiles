@@ -1,15 +1,15 @@
 configuration {
-  font:               "JetBrainsMono Nerd Font Medium 14";
+  font:               "Hack Nerd Font Medium 14";
   /* modes:              [ combi ]; */
   /* combi-modes:        [ window, run, drun, emoji ]; */
   modi:               [ window, run, drun, emoji/*, combi */ ];
 }
 
-@theme                "themes/nord"
+@theme                "themes/fjord"
 
 * {
-  background-color:   @bg;
-  text-color:         @dimmed;
+  background-color:   @background;
+  text-color:         @foreground;
 }
 
 window {
@@ -17,7 +17,6 @@ window {
   padding:            6px;
   margin:             0;
   border:             1px;
-  border-color:       @bg-alt;
   border-radius:      0.5em;
 }
 
@@ -46,7 +45,7 @@ element {
 
 element selected {
   text-color:         @selected;
-  background-color:   @bg-alt;
+  background-color:   @background-alt;
 }
 
 element-text {

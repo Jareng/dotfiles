@@ -2,8 +2,12 @@ window {
   width: 10%;
 }
 
-inputbar {
-  children: [entry];
+mainbox {
+  children: [listview];
+}
+
+entry {
+  enabled: false;
 }
 
 listview {

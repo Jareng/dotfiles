@@ -7,12 +7,13 @@ source ~/.env.zsh
 xset s off
 setxkbmap fr
 
-# Apps
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-picom -b --config ~/.config/picom/picom.conf &
-sxhkd &
-dunst &
-nitrogen --restore &
-unclutter --timeout 2 &
-udiskie -A --notify --smart-tray &
-nm-applet &
+# # Apps
+# /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+# picom &
+# sxhkd &
+# dunst &
+# nitrogen --restore &
+# unclutter --timeout 2 &
+# udiskie -A --notify --smart-tray &
+# easyeffects --gapplication-service &
+# nm-applet &

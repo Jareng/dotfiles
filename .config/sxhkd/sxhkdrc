@@ -1,63 +1,110 @@
-# vim: ft=sxhkdrc
-# wm independent hotkeys
+##########################################
+##
+##   _____  _| |__ | | ____| |
+##  / __\ \/ / '_ \| |/ / _` |
+##  \__ \>  <| | | |   < (_| |
+##  |___/_/\_\_| |_|_|\_\__,_|
+##
+##
+## To find keysym codes, in terminal type:
+## xev -event keyboard
+## then push a key over the white box.
+##
 
-# Rofi
+# ####################
+# # EXAMPLES
+# ####################
+# # Key Concatenation
+# # Thunar (Super + t) & Thunderbird (Super + Shift + t)
+# super + {_,alt + }t
+# 	{thunar, thunderbird}
+#
+# # Key Chords
+# # Super + e + e > emacsclient, Super + e + s > subl, etc..
+# super + e; {e, s, v, j, m}
+#     {emacsclient -c -a emacs, subl, vscodium, joplin-desktop, meld}
+
+####################
+# SXHKD CONFIG
+####################
+
+# sxhkd : restart
+super + shift + x
+    pkill -USR1 -x sxhkd && notify-send "sxhkd config" "Reloaded."
+
+####################
+# COMPOSITOR
+####################
+super + control + shift + p
+    toggle_picom.sh
+
+####################
+# ROFI
+####################
 super + r
-  rofi -show drun
+    rofi -show drun -show-icons
+
+alt + shift + Tab
+    rofi -show window -show-icons
 
 super + shift + e
-  rofi -show emoji -theme-str "#element-icon \{ enabled: false; \}"
+    rofi -show emoji -theme-str "#element-icon \{ enabled: false; \}"
 
 super + shift + p
-  powermenu
+    powermenu
 
+####################
 # dmenu
+####################
 super + p
-  dmenu_run
+    dmenu_run
 
-# printscreen
+####################
+####################
 @Print
-  screenshot
+    screenshot
 
 shift + @Print
-  screenshot select
+    screenshot select
 
 control + @Print
-  screenshot window
+    screenshot window
 
 # volume keys
 super + Prior
-  changevolume up
+    changevolume up
 
 super + Next
-  changevolume down
+    changevolume down
 
 super + End
-  changevolume mute
+    changevolume mute
 
 XF86AudioRaiseVolume
-  changevolume up
+    changevolume up
 
 XF86AudioLowerVolume
-  changevolume down
+    changevolume down
 
 XF86AudioMute
-  changevolume mute
+    changevolume mute
 
 # lockscreen
 super + control + shift + p
-  systemctl suspend
+    systemctl suspend
 
 # notifications
 ctrl + space
-  dunstctl close
+    dunstctl close
 
 ctrl + shift + space
-  dunstctl close-all
+    dunstctl close-all
 
 ctrl + shift + period
-  dunstctl context
+    dunstctl context
 
 # Apps
 super + Return
-  $TERMINAL
+    $TERMINAL
+
+# vim: ft=sxhkdrc

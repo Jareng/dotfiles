@@ -5,8 +5,8 @@ def set_default():
 fjord = {
     "primary":      "#81A1C1",
     "primary_dark": "#5E81AC",
-    "bg":           "#1E222A",
-    "bg_light":     "#303742",
+    "bg":           "#23252E",
+    "bg_light":     "#292C37",
     "fg":           "#B3B8C3",
     "red":          "#BF616A",
     "orange":       "#D08770",
