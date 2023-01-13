@@ -72,7 +72,7 @@ async def move_client(client):
 # Cycle through window including floating in max layout
 @lazy.window.function
 def float_to_front(client):
-    if window.floating:
+    if client.floating:
         client.bring_to_front()
     else:
         client.bring_to_front()
@@ -487,19 +487,22 @@ def widgets_list(primary=False):
         ),
         Spacer(length=SPACER_LENGTH),
         WindowTabs(
+            # selected=(f"<span underline='single' underline-color='{PRIMARY}' font-size='105%'>", "</span>"),
+            selected=(f"<span underline='single' underline-color='{PRIMARY}' font_weight='ultrabold'>", "</span>"),
+            # selected=(f"<span overline='single' overline-color='{PRIMARY}' font_weight='ultrabold'>", "</span>"),
+            # selected=("<u>", "</u>"),
             # selected=(f"<span foreground='{PRIMARY}'>", "</span>")
         ),
         Spacer(length=SPACER_LENGTH),
         Mpris2(
-            name="Spotify",
-            objname="org.mpris.MediaPlayer2.spotify",
-            scroll_interval=None,
-            fmt=f"<span foreground='{GREEN}'></span> " + " {}",
-            # format=f"<span foreground='{PRIMARY}'></span> "+" {xesam:title} - {xesam:artist}",
-            format="{xesam:title} - {xesam:artist}",
-            playing_text="{track}",
-            paused_text=f"<span foreground='{ORANGE}'></span> "+" {track}",
-            scroll=False,
+            # objname="org.mpris.MediaPlayer2.spotify",
+            # scroll_interval=None,
+            # # fmt=f"<span foreground='{GREEN}'></span> " + " {}",
+            # # format=f"<span foreground='{PRIMARY}'></span> "+" {xesam:title} - {xesam:artist}",
+            # format="{xesam:title} - {xesam:artist}",
+            # playing_text="{track}",
+            # # paused_text=f"<span foreground='{ORANGE}'></span> "+" {track}",
+            # scroll=False,
         ),
         Spacer(length=SPACER_LENGTH),
         TextBox(
