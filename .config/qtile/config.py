@@ -37,7 +37,14 @@ auto_minimize = True
 wl_input_rules = {
     "type:keyboard": InputConfig(
         kb_layout="fr",
-        kb_variant="nodeadkeys"
+        kb_variant="nodeadkeys",
+        kb_repeat_delay=600,
+        kb_repeat_rate=25,
+    ),
+    "type:pointer": InputConfig(
+        natural_scroll=False,
+        accel_profile="flat",
+        pointer_accel=0,
     ),
 }
 
@@ -58,15 +65,15 @@ async def outputs_changed():
 
 
 @hook.subscribe.client_new
-async def move_client(client):
+def move_client(client):
     # Center new floating window
     if client.floating:
         client.center()
-    # wait for client name to be updated
-    await asyncio.sleep(0.01)
-    # Move spotify to workspace 9
-    if client.name == "Spotify":
-        client.togroup("9")
+    # # wait for client name to be updated
+    # await asyncio.sleep(0.01)
+    # # Move spotify to workspace 9
+    # if client.name == "Spotify":
+    #     client.togroup("9")
 
 
 # Cycle through window including floating in max layout
@@ -89,7 +96,7 @@ def float_to_front(client):
 #######################
 keys = [
     # Keys_base
-    Key([MOD], "c",
+    Key([MOD], "x",
         lazy.window.kill(),
         desc="Kill focused window"
     ),
@@ -291,11 +298,9 @@ floating_layout = layout.Floating(
         # Match(wm_class="yad"),
         Match(wm_class="mojosetup"),
         Match(wm_class="thunar", title="File Operation Progress"),
-        Match(wm_class="file-roller"),
+        # Match(wm_class="file-roller"),
         # Steam
-        # Match(title="Friends List"),
-        # Match(title="Steam - News"),
-        Match(title=re.compile("Steam - News")),
+        Match(wm_class="Steam", title=re.compile("Steam - News")),
         Match(wm_class="Steam", title=re.compile("Friends List")),
         # The following Match` will float all windows that are transient windows for a parent window:
         Match(func=lambda c: bool(c.is_transient_for())),
@@ -344,14 +349,14 @@ groups = [
           label=groups_labels[2],
           layout="max",
           # matches=[Match(wm_class=["nemo", "thunar", "pcmanfm"])],
-          matches=[Match(wm_class=re.compile('^Nemo.*|^Thunar.*', re.IGNORECASE))],
+          matches=[Match(wm_class=re.compile('^Nemo.*|^Thunar.*|^file-roller.*', re.IGNORECASE))],
           spawn=[FILEMANAGER_GUI]
     ),
     Group("4",
           label=groups_labels[3],
           layout="max",
           # matches=[Match(wm_class=["Steam", "Lutris", "com.usebottles.bottles"])],
-          matches=[Match(wm_class=re.compile('^Steam.*|^Lutris.*|^Bottles.*', re.IGNORECASE))],
+          matches=[Match(wm_class=re.compile('^Steam.*|^Lutris.*|^com.usebottles.bottles.*', re.IGNORECASE))],
     ),
     Group("5",
           label=groups_labels[4],
@@ -622,8 +627,9 @@ def widgets_list(primary=False):
             format="{icon} " \
                    "{temp:.1f}°{units_temperature} " \
                    "({main_feels_like:.1f}°{units_temperature}) " \
-                   "{humidity}% " \
-                   "{wind_speed:.1f}{units_wind_speed}",
+                   # "{humidity}% " \
+                   # "{wind_speed:.1f}{units_wind_speed}" \
+                   "",
             language="fr",
             location=OPW_LOC,
             metric=True,
