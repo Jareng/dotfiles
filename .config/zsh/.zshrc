@@ -36,14 +36,15 @@ zstyle ':z4h:direnv:success' notify 'yes'
 
 # Enable ('yes') or disable ('no') automatic teleportation of z4h over
 # SSH when connecting to these hosts.
-zstyle ':z4h:ssh:192.168.0.10'   enable 'yes'
+zstyle ':z4h:ssh:nastradamus'   enable 'yes'
 zstyle ':z4h:ssh:*.example-hostname2' enable 'no'
 # The default value if none of the overrides above match the hostname.
 zstyle ':z4h:ssh:*'                   enable 'no'
 
 # Send these files over to the remote host when connecting over SSH to the
 # enabled hosts.
-zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.env.zsh'
+# zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.env.zsh'
+zstyle ':z4h:ssh:*' send-extra-files '~/.config/nvim/lua/user/init.lua'
 
 # Clone additional Git repositories from GitHub.
 #
@@ -61,11 +62,6 @@ z4h init || return
 
 # Export environment variables.
 export GPG_TTY=$TTY
-
-# # CONFIGS
-# export XDG_CONFIG_HOME="$HOME/.config"
-# export XDG_DATA_HOME="$HOME/.local/share"
-# export XINITRC="$XDG_CONFIG_HOME"/X11/xinitrc
 
 # Source additional local files if they exist.
 z4h source ~/.env.zsh
@@ -95,6 +91,8 @@ compdef _directories md
 # Define named directories: ~w <=> Windows home directory on WSL.
 [[ -z $z4h_win_home ]] || hash -d w=$z4h_win_home
 
+alias color_table="for i in {0..255}; do print -Pn '%K{$i}  %k%F{$i}${(l:3::0:)i}%f ' ${${(M)$((i%6)):#3}:+$\'\n\'}; done"
+
 ## Define aliases.
 alias tree='tree -a -I .git'
 
@@ -102,6 +100,9 @@ alias tree='tree -a -I .git'
 alias svn="svn --config-dir $XDG_CONFIG_HOME/subversion"
 alias nvnvidia-settings="nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings"
 alias wget="wget --hsts-file=$XDG_DATA_HOME/wget-hsts"
+
+#sudo
+alias sudo="sudo "
 
 # vim
 alias vim="nvim"
@@ -157,6 +158,9 @@ alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys"
 
 # check qtile config
 alias checkqtile="python3 ~/.config/qtile/config.py && qtile cmd-obj -o cmd -f validate_config"
+
+# compile dxvk
+alias updx="cd ~/Games/dxvk-tools/; git pull; ./updxvk build; ./updxvk lutris; ./updxvk proton-dist; ./upvkd3d-proton build; ./upvkd3d-proton lutris; ./upvkd3d-proton proton-dist" 
 
 # Fix yadm tab bug
 __git_files () {
