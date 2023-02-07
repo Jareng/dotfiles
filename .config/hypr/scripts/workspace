@@ -1,0 +1,41 @@
+#! /bin/bash
+# yanked from https://github.com/taylor85345
+
+monitors=/tmp/hypr/monitors_temp
+hyprctl monitors > $monitors
+
+prevworkspace_temp=/tmp/hypr/prevworkspace_temp
+prevworkspace=$(cat "$prevworkspace_temp")
+currworkspace=$(grep -B 4 "focused: yes" "$monitors" | awk 'NR==1 {print $3}')
+
+if [[ $1 == "prev" ]]; then
+  hyprctl dispatch workspace "$prevworkspace"
+fi
+
+if [[ $1 -ne "$currworkspace" ]]; then
+  grep -B 4 "focused: yes" "$monitors" | awk 'NR==1 {print $3}' > $prevworkspace_temp
+fi
+
+if [[ -z $1 ]]; then
+  workspace=$(grep -B 4 "focused: no" "$monitors" | awk 'NR==1 {print $3}')
+else
+  workspace=$1
+fi
+
+activemonitor=$(grep -B 10 "focused: yes" "$monitors" | awk 'NR==1 {print $2}')
+passivemonitor=$(grep  -B 6 "($workspace)" "$monitors" | awk 'NR==1 {print $2}')
+# activews=$(grep -A 2 "$activemonitor" "$monitors" | awk 'NR==3 {print $1}' RS='(' FS=')')
+passivews=$(grep -A 4 "$passivemonitor" "$monitors" | awk 'NR==4 {print $1}' RS='(' FS=')')
+
+if [[ $workspace -eq $passivews ]] && [[ $activemonitor != "$passivemonitor" ]]; then
+  hyprctl dispatch swapactiveworkspaces "$activemonitor" "$passivemonitor"
+else
+  hyprctl keyword general:no_cursor_warps 1
+  hyprctl dispatch moveworkspacetomonitor "$workspace" "$activemonitor"
+  hyprctl dispatch workspace "$workspace"
+  hyprctl keyword general:no_cursor_warps 0
+fi
+
+echo $prevworkspace
+
+exit 0
