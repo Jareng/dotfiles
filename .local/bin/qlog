@@ -1,0 +1,12 @@
+#!/bin/bash
+
+logfile="$HOME/.local/share/qtile/qtile.log"
+
+if [[ $1 = "clear" ]]; then
+    truncate --size=0 "$logfile"
+    echo "Qtile log cleared"
+else
+    echo "Begin Qtile log"
+    cat "$logfile"
+    echo "End Qtile log"
+fi
