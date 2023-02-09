@@ -1,6 +1,0 @@
-#!/bin/bash
-
-hyprctl keyword windowrule "workspace special, $TERMINAL"
-hyprctl dispatch exec $TERMINAL
-sleep 1
-hyprctl keyword windowrule "workspace unset, $TERMINAL"
