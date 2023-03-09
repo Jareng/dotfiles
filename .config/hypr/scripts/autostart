@@ -3,6 +3,7 @@
 # Special
 hyprctl keyword windowrule "workspace special silent, $TERMINAL"
 hyprctl dispatch exec $TERMINAL
+sleep 1
 
 # File Manager
 hyprctl keyword windowrule "workspace 3 silent, $FILE_MANAGER_GUI"
