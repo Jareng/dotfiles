@@ -1,6 +1,3 @@
-## Path
-export PATH="$PATH:/home/$(whoami)/.scripts"
-
 ## Theme
 # export GTK_THEME="Flat-Remix-GTK-Blue-Dark-Solid"
 # export XCURSOR_THEME="Vimix-white-cursors"
@@ -8,9 +5,6 @@ export PATH="$PATH:/home/$(whoami)/.scripts"
 ## Config files
 
 # General
-export XDG_CURRENT_DESKTOP="qtile"
-export XDG_SESSION_DESKTOP="qtile"
-
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
@@ -79,17 +73,15 @@ export FILE_MANAGER_TUI="ranger"
 export CODE_EDITOR="vscode"
 export OPENER="xdg-open"
 export PAGER="less"
-export WM="qtile"
+# export WM="qtile"
+
+# Pipewire
+export PIPEWIRE_LATENCY="128/48000"
+
+export KEYB_DEVICE_NAME="holtek-usb-hid-keyboard"
+
 # Neovim Manpager
 export MANPAGER="sh -c \"col -b | nvim -c 'set ft=man ts=8 nomod nolist nonu' -c 'nnoremap i <nop>' -\""
 
-# # qt5
-# export QT_QPA_PLATFORMTHEME="qt5ct"
-# export QT_STYLE_OVERRIDE="kvantum"
-
-# Test Init
-if [[ "$INITCONFS" != "" ]]; then
-  export INITCONFS="$INITCONFS, .env.zsh"
-else
-  export INITCONFS=".env.zsh"
-fi
+## Path
+export PATH="$PATH:$CARGO_HOME/bin:$HOME/.scripts"

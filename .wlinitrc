@@ -6,24 +6,30 @@ export WLR_NO_HARDWARE_CURSORS=1
 export WLR_RENDERER=vulkan
 # General wayland environment variables
 export XDG_SESSION_TYPE=wayland
+# Tell QT applications to use the Wayland backend, and fall back to x11 if Wayland is unavailable
 export QT_QPA_PLATFORM="wayland;xcb"
+# Disables window decorations on QT applications
 export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+# Tells QT based applications to pick your theme from qt5ct, use with Kvantum
+export QT_QPA_PLATFORMTHEME=qt5ct
 # Firefox wayland environment variable
 export MOZ_ENABLE_WAYLAND=1
 export MOZ_USE_XINPUT2=1
 # OpenGL Variables
 export GBM_BACKEND=nvidia-drm
-export __GL_GSYNC_ALLOWED=0
-export __GL_VRR_ALLOWED=0
 export __GLX_VENDOR_LIBRARY_NAME=nvidia
+export __GL_GSYNC_ALLOWED=1
+export __GL_VRR_ALLOWED=0
 
 # export SDL_VIDEODRIVER=wayland # Can break some native games
 export KITTY_ENABLE_WAYLAND=1
 
 export LIBVA_DRIVER_NAME=nvidia
-# export GDK_BACKEND=wayland
+export GDK_BACKEND="wayland,x11"
 
+# Fix possibly broken Java applications. Set to 1 until Wakefield is available.
 export _JAVA_AWT_WM_NONREPARENTING=1
+
 export GTK_THEME="Flat-Remix-GTK-Blue-Dark-Solid"
 export XCURSOR_THEME="Vimix-white-cursors"
 export ICON_THEME="Flat-Remix-Blue-Dark"

@@ -6,9 +6,9 @@
 
 # Periodic auto-update on Zsh startup: 'ask' or 'no'.
 # You can manually run `z4h update` to update everything.
-zstyle ':z4h:' auto-update      'yes'
+zstyle ':z4h:' auto-update      'ask'
 # Ask whether to auto-update this often; has no effect if auto-update is 'no'.
-zstyle ':z4h:' auto-update-days '28'
+zstyle ':z4h:' auto-update-days '14'
 
 # Don't start tmux.
 zstyle ':z4h:' start-tmux       no
@@ -36,7 +36,7 @@ zstyle ':z4h:direnv:success' notify 'yes'
 
 # Enable ('yes') or disable ('no') automatic teleportation of z4h over
 # SSH when connecting to these hosts.
-zstyle ':z4h:ssh:nastradamus'   enable 'yes'
+zstyle ':z4h:ssh:nastradamus'   enable 'no'
 zstyle ':z4h:ssh:*.example-hostname2' enable 'no'
 # The default value if none of the overrides above match the hostname.
 zstyle ':z4h:ssh:*'                   enable 'no'
@@ -44,7 +44,7 @@ zstyle ':z4h:ssh:*'                   enable 'no'
 # Send these files over to the remote host when connecting over SSH to the
 # enabled hosts.
 # zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.env.zsh'
-zstyle ':z4h:ssh:*' send-extra-files '~/.config/nvim/lua/user/init.lua'
+zstyle ':z4h:ssh:*' send-extra-files '~/.config/nvim/lua/user/init.lua' '~/.env.zsh'
 
 # Clone additional Git repositories from GitHub.
 #
@@ -104,14 +104,10 @@ alias wget="wget --hsts-file=$XDG_DATA_HOME/wget-hsts"
 #sudo
 alias sudo="sudo "
 
-# vim
-alias vim="nvim"
-
-# Changing "ls" to "exa"
-alias ls='exa -l --color=always --group-directories-first' # my preferred listing
-alias ll='exa -alg --color=always --group-directories-first'  # long format
-alias lt='exa -aT --color=always --group-directories-first' # tree listing
-alias l.='exa -a | egrep "^\."'
+alias ls="exa -l --color=always --group-directories-first"
+alias ll="exa -alg --color=always --group-directories-first"
+alias lt="exa -aT --color=always --group-directories-first"
+alias l.="exa -a | grep -E '^\.'"
 
 # pacman and yay
 alias unlock='sudo rm /var/lib/pacman/db.lck'    # remove pacman lock

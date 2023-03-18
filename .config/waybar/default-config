@@ -13,6 +13,8 @@
     // Modules configuration
     "wlr/workspaces": {
         "format": "{icon}",
+        "sort-by-number": true,
+        // "all-outputs": true,
         "on-click": "activate"
     },
 
@@ -118,7 +120,7 @@
         "tooltip": true,
         "tooltip-format": "Memory:  {used:0.1f}G/{total:0.1f}G {percentage}%\nSwap:    {swapUsed:0.1f}G/{swapTotal:0.1f}G   {swapPercentage}%"
     },
-    
+
     // "bluetooth": {
     //     "format": "",
     //     "format-disabled": "",
@@ -152,6 +154,7 @@
         "tooltip": true,
         "interval": 3600,
         "exec": "$XDG_CONFIG_HOME/waybar/scripts/waybar-wttr.py",
+        // "exec-on-event": true,
         "return-type": "json"
     },
 

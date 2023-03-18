@@ -1,3 +1,5 @@
+// vim: ft=rasi
+
 configuration {
   font:               "Hack Nerd Font Medium 14";
   /* modes:              [ combi ]; */

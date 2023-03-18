@@ -13,8 +13,7 @@ hyprctl dispatch exec $FILE_MANAGER_GUI
 hyprctl keyword windowrule "workspace 5 silent, $TERMINAL"
 hyprctl dispatch exec $TERMINAL
 
-
 # Clean after start
-sleep 1
+sleep 2
 hyprctl keyword windowrule "workspace unset, $TERMINAL"
 hyprctl keyword windowrule "workspace unset, $FILE_MANAGER_GUI"
