@@ -8,7 +8,9 @@ return {
       "c",
       "cpp",
       "python",
-      "rasi"
+      "rasi",
+      "gitcommit",
+      "gitignore",
     },
   },
 }
