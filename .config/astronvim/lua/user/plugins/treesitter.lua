@@ -11,6 +11,7 @@ return {
       "rasi",
       "gitcommit",
       "gitignore",
+      "toml",
     },
   },
 }
