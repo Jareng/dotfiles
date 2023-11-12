@@ -37,8 +37,8 @@ auto_minimize = True
 wl_input_rules = {
     "type:keyboard": InputConfig(
         kb_layout="fr",
-        kb_variant="nodeadkeys",
-        kb_repeat_delay=600,
+        kb_variant="oss",
+        kb_repeat_delay=400,
         kb_repeat_rate=25,
     ),
     "type:pointer": InputConfig(
@@ -64,11 +64,12 @@ async def outputs_changed():
     qtile.reload_config()
 
 
-@hook.subscribe.client_new
-def move_client(client):
-    # Center new floating window
-    if client.floating:
-        client.center()
+# @hook.subscribe.client_new
+# def move_client(client):
+#     sleep(1)
+#     # Center new floating window
+#     if client.floating:
+#         client.center()
     # # wait for client name to be updated
     # await asyncio.sleep(0.01)
     # # Move spotify to workspace 9
@@ -293,6 +294,7 @@ floating_layout = layout.Floating(
         Match(wm_class="makebranch"),  # gitk
         Match(wm_class="maketag"),  # gitk
         Match(wm_class="ssh-askpass"),  # ssh-askpass
+        Match(wm_class="org.gnome.Calculator"),
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
         # Match(wm_class="yad"),
@@ -492,11 +494,13 @@ def widgets_list(primary=False):
         ),
         Spacer(length=SPACER_LENGTH),
         WindowTabs(
+            fmt=f"<span foreground='{GREY_ALT}'>" + "{}</span>",
+            # separator=f" <span foreground='{GREY}'>|</span> ",
             # selected=(f"<span underline='single' underline-color='{PRIMARY}' font-size='105%'>", "</span>"),
-            selected=(f"<span underline='single' underline-color='{PRIMARY}' font_weight='ultrabold'>", "</span>"),
+            # selected=(f"<span font_weight='bold'>", "</span>"),
             # selected=(f"<span overline='single' overline-color='{PRIMARY}' font_weight='ultrabold'>", "</span>"),
             # selected=("<u>", "</u>"),
-            # selected=(f"<span foreground='{PRIMARY}'>", "</span>")
+            selected=(f"<span foreground='{FOREGROUND}'>", "</span>")
         ),
         Spacer(length=SPACER_LENGTH),
         Mpris2(
@@ -635,6 +639,17 @@ def widgets_list(primary=False):
             metric=True,
         ),
         Spacer(length=SPACER_LENGTH),
+    ]
+
+    if primary:
+        widgets.extend([
+            StatusNotifier(
+                icon_theme=ICONS_THEME,
+            ),
+            Spacer(length=SPACER_LENGTH),
+        ]),
+
+    widgets.extend([
         WidgetBox(
             widgets=[
                 Clock(
@@ -658,15 +673,7 @@ def widgets_list(primary=False):
             },
         ),
         Spacer(length=SPACER_LENGTH),
-    ]
-
-    if primary:
-        widgets.extend([
-            StatusNotifier(
-                icon_theme=ICONS_THEME,
-            ),
-            Spacer(length=SPACER_LENGTH),
-        ]),
+    ])
 
     return widgets
 

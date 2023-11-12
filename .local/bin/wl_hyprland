@@ -1,0 +1,8 @@
+#!/bin/bash
+
+source ~/.wlinitrc
+
+export LOGOUT_CMD="hyprctl dispatch exit 0"
+export XDG_CURRENT_DESKTOP=Hyprland
+export XDG_SESSION_DESKTOP=Hyprland
+exec Hyprland

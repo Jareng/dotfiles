@@ -1,13 +1,13 @@
-// vim: ft=rasi
-
 configuration {
   font:               "Hack Nerd Font Medium 14";
   /* modes:              [ combi ]; */
   /* combi-modes:        [ window, run, drun, emoji ]; */
-  modi:               [ window, run, drun, emoji/*, combi */ ];
+  modi:               [ window, run, drun ];
+  /* kb-mode-next:       "Shift+Right"; */
+  /* kb-row-down:        "Down,Control+Tab"; */
 }
 
-@theme                "themes/fjord"
+@theme                "themes/themes"
 
 * {
   background-color:   @background;
@@ -15,6 +15,8 @@ configuration {
 }
 
 window {
+  width:              40%;
+  max-height:             50%;
   children:           [ mainbox ];
   padding:            6px;
   margin:             0;
@@ -24,12 +26,12 @@ window {
 
 inputbar {
   children:           [ textbox-custom, entry ];
-  padding:            0.3em;
+  padding:            0.5em 2em;
 }
 
 textbox-custom {
   expand:             false;
-  content:            "﬌";
+  content:            "󰘍";
   padding:             0 0.6em 0 0;
 }
 
@@ -54,8 +56,10 @@ element-text {
   background-color:   inherit;
   text-color:         inherit;
   highlight:          @selected;
+  padding:            0 0 0 0.2em;
 }
 
 element-icon {
-  size:               1em;
+  size:               2em;
+  background-color:   inherit;
 }

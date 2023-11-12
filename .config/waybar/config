@@ -1,13 +1,13 @@
 // vim: ft=jsonc
 [{
     "height": 26,
-    "output": ["DP-2"],
+    "output": ["DP-3"],
     "include": [
         "~/.config/waybar/default-config"
     ]
 },{
-    "height": 24,
-    "output": ["DP-3"],
+    "height": 22,
+    "output": ["DP-2"],
     "include": [
         "~/.config/waybar/default-config"
     ]

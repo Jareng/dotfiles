@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 
 # Hardware cursors not yet working on wlroots
 export WLR_NO_HARDWARE_CURSORS=1
 # Set WLRoots renderer to Vulkan to avoid flickering
-export WLR_RENDERER=vulkan
+# export WLR_RENDERER=vulkan
 # General wayland environment variables
 export XDG_SESSION_TYPE=wayland
 # Tell QT applications to use the Wayland backend, and fall back to x11 if Wayland is unavailable
@@ -12,31 +12,37 @@ export QT_QPA_PLATFORM="wayland;xcb"
 export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 # Tells QT based applications to pick your theme from qt5ct, use with Kvantum
 export QT_QPA_PLATFORMTHEME=qt5ct
+# enables automatic scaling, based on the monitor’s pixel density
+export QT_AUTO_SCREEN_SCALE_FACTOR=1
 # Firefox wayland environment variable
 export MOZ_ENABLE_WAYLAND=1
 export MOZ_USE_XINPUT2=1
 # OpenGL Variables
 export GBM_BACKEND=nvidia-drm
+# export GBM_BACKEND=nvidia
 export __GLX_VENDOR_LIBRARY_NAME=nvidia
+# Hardware acceleration on NVIDIA GPUs
+export LIBVA_DRIVER_NAME=nvidia
 export __GL_GSYNC_ALLOWED=1
-export __GL_VRR_ALLOWED=0
+export __GL_VRR_ALLOWED=1
+# use legacy DRM interface instead of atomic mode setting. Might fix flickering issues.
+export WLR_DRM_NO_ATOMIC=0
+
+# Run SDL2 applications on Wayland.
+# Remove or set to x11 if games that provide older versions of SDL cause compatibility issues
+# export SDL_VIDEODRIVER=wayland
+
+# Clutter package already has wayland enabled,
+# this variable will force Clutter applications to try and use the Wayland backend
+export CLUTTER_BACKEND=wayland
 
 # export SDL_VIDEODRIVER=wayland # Can break some native games
 export KITTY_ENABLE_WAYLAND=1
 
-export LIBVA_DRIVER_NAME=nvidia
 export GDK_BACKEND="wayland,x11"
 
 # Fix possibly broken Java applications. Set to 1 until Wakefield is available.
 export _JAVA_AWT_WM_NONREPARENTING=1
-
-export GTK_THEME="Flat-Remix-GTK-Blue-Dark-Solid"
-export XCURSOR_THEME="Vimix-white-cursors"
-export ICON_THEME="Flat-Remix-Blue-Dark"
-# export XCURSOR_SIZE=24
-
-export XKB_DEFAULT_LAYOUT="fr"
-export XKB_DEFAULT_VARIANT="nodeadkeys"
 
 # exec systemctl --user import-environment DISPLAY
 # exec systemctl --user import-environment WAYLAND_DISPLAY

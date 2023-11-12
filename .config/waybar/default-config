@@ -1,185 +1,215 @@
 // vim: ft=jsonc
 {
-    "layer": "top",
-    "position": "top",
-    "exclusive": true,
-    "spacing": 4, // Gaps between modules (4px)
-
-    // Choose the order of the modules
-    "modules-left": ["wlr/workspaces", "hyprland/window"],
-    "modules-center": ["mpris"],
-    "modules-right": ["pulseaudio", "cpu", "temperature", "memory", "network", "tray", "custom/weather", "clock"],
-
-    // Modules configuration
-    "wlr/workspaces": {
-        "format": "{icon}",
-        "sort-by-number": true,
-        // "all-outputs": true,
-        "on-click": "activate"
-    },
-
-    "hyprland/window": {
-        "format": "{}",
-        "separate-outputs": true
-    },
-
-    "mpris": {
-        "format": "{player_icon} {artist} - {title}",
-        "format-paused": "{status_icon} <i>{artist} - {title}</i>",
-        "player-icons": {
-            "default": "<span color='#A3BE8C'>▶</span>",
-            "mpv": "<span color='#A3BE8C'>🎵</span>",
-            "spotify": "<span color='#A3BE8C'>阮</span>"
-        },
-        "status-icons": {
-            "paused": "<span color='#D08770'>⏸</span>"
-        },
-        "ignored-players": ["firefox"]
-    },
-
-    // "custom/spotify": {
-    //     "format": "{icon} {}",
-    //     "escape": true,
-    //     "return-type": "json",
-    //     "max-length": 40,
-    //     "interval": 30, // Remove this if your script is endless and write in loop
-    //     "on-click": "playerctl -p spotify play-pause",
-    //     "on-click-right": "killall spotify",
-    //     "smooth-scrolling-threshold": 10, // This value was tested using a trackpad, it should be lowered if using a mouse.
-    //     "on-scroll-up" : "playerctl -p spotify next",
-    //     "on-scroll-down" : "playerctl -p spotify previous",
-    //     "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null", // Script in resources/custom_modules folder
-    //     "exec-if": "pgrep spotify"
+  "layer": "top",
+  "position": "top",
+  "exclusive": true,
+  "spacing": 4, // Gaps between modules (4px)
+  // Choose the order of the modules
+  "modules-left": [
+    "hyprland/workspaces",
+    "hyprland/window"
+  ],
+  "modules-center": [
+    "mpris"
+  ],
+  "modules-right": [
+    "pulseaudio",
+    "cpu",
+    "temperature",
+    "custom/gpuinfo",
+    "memory",
+    "network",
+    "idle_inhibitor",
+    "tray",
+    "custom/weather",
+    "clock"
+  ],
+  // Modules configuration
+  // "hyprland/workspaces": {
+  //     // "format": "{icon}",
+  //     "sort-by-number": true,
+  //     // "all-outputs": true,
+  //     "on-click": "activate"
+  // },
+  "hyprland/workspaces": {
+    // "persistent-workspaces": {
+    //   "DP-3": 1, // workspace 1 shown on DP-3
+    //   "DP-2": 10 // workspaces 10 shown on DP-2
     // },
-
-    "pulseaudio": {
-        // "scroll-step": 1, // %, can be a float
-        "format": "<span color='#81a1c1'>{icon}</span> {volume}% {format_source}",
-		"format-muted": "🔇 {format_source}",
-		"format-bluetooth": "{icon} {volume}% {format_source}",
-		"format-bluetooth-muted": "🔇 {format_source}",
-		"format-source": "<span color='#81a1c1'></span> {volume}%",
-		"format-source-muted": "<span color='#bf616a'></span>",
-
-		"format-icons": {
-			"headphones": "",
-			"handsfree": "",
-			"headset": "",
-			"phone": "",
-			"portable": "",
-			"car": "",
-			"default": ["", "", ""]
-		},
-        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
-        "on-click-middle": "pavucontrol",
-        "on-click-right": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
-        "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1%",
-        "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1%"
+    "all-outputs": false,
+    "active-only": "false",
+    "show-special": false,
+    "format": "{name}"
+  },
+  "hyprland/window": {
+    "format": "{}",
+    "separate-outputs": true
+  },
+  "mpris": {
+    "format": "{player_icon} {artist} - {title}",
+    "format-paused": "{status_icon} <i>{artist} - {title}</i>",
+    "player-icons": {
+      "default": "<span color='#A3BE8C'></span>",
+      "mpv": "<span color='#A3BE8C'>󰎈</span>",
+      "spotify": "<span color='#A3BE8C'></span>"
     },
-
-    // "wireplumber": {
-    //     "format": "<span color='#81a1c1'>{icon}</span> {volume}%",
-    //     "format-muted": "🔇",
-    //     "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
-    //     "on-click-middle": "pavucontrol",
-    //     "on-click-right": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
-    //     "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1%",
-    //     "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1%",
-    //     "format-icons": ["", "", ""]
-    // },
-
-    "cpu": {
-		"interval": 5,
-		"format": "<span color='#81a1c1'></span> {usage}% ({load})",
-		"tooltip": true,
-		"states": {
-			"warning": 70,
-			"critical": 90
-		}
-	},
-
-    "temperature": {
-        "thermal-zone": 2,
-        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-        "critical-threshold": 90,
-        "format": "<span color='#81a1c1'>{icon}</span> {temperatureC}°",
-        "format-critical": "<span color='#bf616a'>{icon}</span> {temperatureC}°",
-        "format-icons": [
-            "", // Icon: temperature-empty
-            "", // Icon: temperature-quarter
-            "", // Icon: temperature-half
-            "", // Icon: temperature-three-quarters
-            ""  // Icon: temperature-full
-        ]
+    "status-icons": {
+      "paused": "<span color='#D08770'>⏸</span>"
     },
-
-    "memory": {
-        "interval": 30,
-        // "format": "<span color='#81a1c1'></span> {used:0.1f}G/{total:0.1f}G",
-        "format": "<span color='#81a1c1'></span> {}%",
-        "tooltip": true,
-        "tooltip-format": "Memory:  {used:0.1f}G/{total:0.1f}G {percentage}%\nSwap:    {swapUsed:0.1f}G/{swapTotal:0.1f}G   {swapPercentage}%"
-    },
-
-    // "bluetooth": {
-    //     "format": "",
-    //     "format-disabled": "",
-    //     "interval": 30,
-    //     "on-click": "blueman-manager",
-    //     "on-click-right": "rfkill toggle bluetooth",
-    //     "tooltip-format": "{}"
-    // },
-
-    "network": {
-        // "interface": "wlp2s0",
-        "format": "{ifname}",
-        "format-wifi": "<span color='#81a1c1'></span> {essid} ({signalStrength}%)",
-        "format-ethernet": "<span color='#81a1c1'></span>",
-        "format-disconnected": "<span color='#bf616a'>⚠</span>", //An empty format will hide the module.
-        "tooltip-format": "Interface: {ifname}\nIP: {ipaddr}\nGateway: {gwaddr}\nNetmask: {netmask}",
-        "tooltip-format-wifi": "Interface: {ifname}\nSSID: {essid} ({signalStrength}%)\nIP: {ipaddr}\nGateway: {gwaddr}\nNetmask: {netmask}",
-        "tooltip-format-ethernet": "Interface: {ifname}\nIP:        {ipaddr}\nGateway:   {gwaddr}\nNetmask:   {netmask}",
-        "tooltip-format-disconnected": "<span color='#bf616a'>⚠</span> Disconnected",
-        "max-length": 50
-    },
-
-    "tray": {
-        // "icon-size": 20,
-        "spacing": 4,
-        "show-passive-items": true
-    },
-
-    "custom/weather": {
-        "format": "{}",
-        "tooltip": true,
-        "interval": 3600,
-        "exec": "$XDG_CONFIG_HOME/waybar/scripts/waybar-wttr.py",
-        // "exec-on-event": true,
-        "return-type": "json"
-    },
-
-    "clock": {
-        "timezone": "Europe/Paris",
-        "locale": "fr_FR.UTF-8",
-        // "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>",
-        // "format": "📅 {:%H:%M}",
-        // "format-alt": "📅 {:%A, %B %d, %Y (%R)}",
-        "format": "<span color='#81A1C1'></span> {:%H:%M} ",
-        "format-alt": "<span color='#81A1C1'></span> {:%A, %B %d, %Y (%R)} ",
-        "tooltip-format": "<tt>{calendar}</tt>",
-        "calendar": {
-            "mode"          : "month",
-            "mode-mon-col"  : 2,
-            "weeks-pos"     : "right",
-            "on-scroll"     : 1,
-            "on-click-right": "mode",
-            "format": {
-                "months":     "<span color='#E5E9F0'><b><big>{}</big></b></span>",
-                "days":       "<span color='#B3B8C3'><b>{}</b></span>",
-                "weeks":      "<span color='#A3BE8C'><b>W{}</b></span>",
-                "weekdays":   "<span color='#EBCB8B'><b>{}</b></span>",
-                "today":      "<span color='#81A1C1'><b><u>{}</u></b></span>"
-            }
-        }
+    "ignored-players": [
+      "firefox"
+    ]
+  },
+  // "custom/spotify": {
+  //     "format": "{icon} {}",
+  //     "escape": true,
+  //     "return-type": "json",
+  //     "max-length": 40,
+  //     "interval": 30, // Remove this if your script is endless and write in loop
+  //     "on-click": "playerctl -p spotify play-pause",
+  //     "on-click-right": "killall spotify",
+  //     "smooth-scrolling-threshold": 10, // This value was tested using a trackpad, it should be lowered if using a mouse.
+  //     "on-scroll-up" : "playerctl -p spotify next",
+  //     "on-scroll-down" : "playerctl -p spotify previous",
+  //     "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null", // Script in resources/custom_modules folder
+  //     "exec-if": "pgrep spotify"
+  // },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "<span color='#A3BE8C'></span>",
+      "deactivated": "<span color='#4C566A'></span>"
     }
+  },
+  "pulseaudio": {
+    // "scroll-step": 1, // %, can be a float
+    "format": "<span color='#5E81AC'><big>{icon}</big></span> {volume}% {format_source}",
+    "format-muted": "🔇 Mute {format_source}",
+    "format-bluetooth": "<span color='#5E81AC'><big></big></span> {volume}% {format_source}",
+    "format-bluetooth-muted": "🔇 Mute {format_source}",
+    "format-source": "<span color='#5E81AC'></span> {volume}%",
+    "format-source-muted": "<span color='#bf616a'></span>",
+    "format-icons": {
+      "headphones": "",
+      "handsfree": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": [
+        "",
+        "",
+        "󰕾"
+      ]
+    },
+    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+    "on-click-middle": "pkill pavucontrol || pavucontrol",
+    "on-click-right": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
+    "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1%",
+    "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1%"
+  },
+  // "wireplumber": {
+  //     "format": "<span color='#5E81AC'>{icon}</span> {volume}%",
+  //     "format-muted": "🔇",
+  //     "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+  //     "on-click-middle": "pavucontrol",
+  //     "on-click-right": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
+  //     "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1%",
+  //     "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1%",
+  //     "format-icons": ["", "", "]
+  // },
+  "cpu": {
+    "interval": 5,
+    "format": "<span color='#5E81AC'><big>󰻠</big></span> {usage}% ({load})",
+    "tooltip": true,
+    "states": {
+      "warning": 70,
+      "critical": 90
+    }
+  },
+  "temperature": {
+    // "thermal-zone": 2,
+    "hwmon-path": "/sys/class/hwmon/hwmon1/temp1_input",
+    "critical-threshold": 90,
+    "format": "<span color='#5E81AC'>{icon}</span> {temperatureC}°",
+    "format-critical": "<span color='#bf616a'>{icon}</span> {temperatureC}°",
+    "format-icons": [
+      "", // Icon: temperature-empty
+      "", // Icon: temperature-quarter
+      "", // Icon: temperature-half
+      "", // Icon: temperature-three-quarters
+      "" // Icon: temperature-full
+    ]
+  },
+  "custom/gpuinfo": {
+    "exec": " ~/.config/waybar/scripts/gpuinfo.sh",
+    "return-type": "json",
+    "format": "<span color='#5E81AC'></span> {}",
+    "interval": 5, // once every 5 seconds
+    "tooltip": true
+  },
+  "memory": {
+    "interval": 30,
+    // "format": "<span color='#5E81AC'></span> {used:0.1f}G/{total:0.1f}G",
+    "format": "<span color='#5E81AC'><big>󰍛</big></span> {}%",
+    "tooltip": true,
+    "tooltip-format": "Memory:  {used:0.1f}G/{total:0.1f}G {percentage}%\nSwap:    {swapUsed:0.1f}G/{swapTotal:0.1f}G   {swapPercentage}%"
+  },
+  // "bluetooth": {
+  //     "format": "",
+  //     "format-disabled": "",
+  //     "interval": 30,
+  //     "on-click": "blueman-manager",
+  //     "on-click-right": "rfkill toggle bluetooth",
+  //     "tooltip-format": "{}"
+  // },
+  "network": {
+    // "interface": "wlp2s0",
+    "format": "{ifname}",
+    "format-wifi": "<span color='#5E81AC'></span> {essid} ({signalStrength}%)",
+    "format-ethernet": "<span color='#5E81AC'>󰈀</span>",
+    "format-disconnected": "<span color='#bf616a'>⚠</span>", //An empty format will hide the module.
+    "tooltip-format": "Interface: {ifname}\nIP: {ipaddr}\nGateway: {gwaddr}\nNetmask: {netmask}",
+    "tooltip-format-wifi": "Interface: {ifname}\nSSID: {essid} ({signalStrength}%)\nIP: {ipaddr}\nGateway: {gwaddr}\nNetmask: {netmask}",
+    "tooltip-format-ethernet": "Interface: {ifname}\nIP:        {ipaddr}\nGateway:   {gwaddr}\nNetmask:   {netmask}",
+    "tooltip-format-disconnected": "<span color='#bf616a'>⚠</span> Disconnected",
+    "max-length": 50
+  },
+  "tray": {
+    // "icon-size": 20,
+    "spacing": 4,
+    "show-passive-items": true
+  },
+  "custom/weather": {
+    "format": "{}",
+    "tooltip": true,
+    "interval": 3600,
+    "exec": "$XDG_CONFIG_HOME/waybar/scripts/waybar-wttr.py",
+    // "exec-on-event": true,
+    "return-type": "json"
+  },
+  "clock": {
+    "timezone": "Europe/Paris",
+    "locale": "fr_FR.UTF-8",
+    // "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>",
+    // "format": "📅 {:%H:%M}",
+    // "format-alt": "📅 {:%A, %B %d, %Y (%R)}",
+    "format": "<span color='#5E81AC'></span> {:%H:%M} ",
+    "format-alt": "<span color='#5E81AC'></span> {:%A %d %B %Y (%R)} ",
+    "tooltip-format": "<tt>{calendar}</tt>",
+    "calendar": {
+      "mode": "month",
+      "mode-mon-col": 2,
+      "weeks-pos": "right",
+      "on-scroll": 1,
+      "on-click-right": "mode",
+      "format": {
+        "months": "<span color='#E5E9F0'><b><big>{}</big></b></span>",
+        "days": "<span color='#B3B8C3'><b>{}</b></span>",
+        "weeks": "<span color='#A3BE8C'><b>W{}</b></span>",
+        "weekdays": "<span color='#EBCB8B'><b>{}</b></span>",
+        "today": "<span color='#5E81AC'><b><u>{}</u></b></span>"
+      }
+    }
+  }
 }
