@@ -1,10 +1,43 @@
 // vim: ft=jsonc
 {
+  "layer": "top",
+  "position": "top",
+  "mode": "dock",
+  "exclusive": true,
+  "passtrough": false,
+  "gtk-layer-shell": true,
+  "spacing": 4, // Gaps between modules (4px)
+  // Choose the order of the modules
+  "modules-left": [
+    "hyprland/workspaces",
+    "hyprland/window"
+  ],
+  "modules-center": [
+    "mpris"
+  ],
+  "modules-right": [
+    "bluetooth",
+    "pulseaudio",
+    "custom/cpu",
+    "cpu",
+    "temperature",
+    "custom/gpu",
+    // "custom/gpuinfo",
+    "custom/gpu-usage",
+    "temperature#gpu",
+    "memory",
+    "network",
+    "idle_inhibitor",
+    "tray",
+    "custom/weather",
+    "clock"
+  ],
   "hyprland/workspaces": {
     "disable-scroll": true,
     "all-outputs": false,
     "active-only": false,
     "show-special": false,
+    "special-visible-only": true,
     "format": "{name}",
     "on-click": "activate",
     "sort-by-number": true,
@@ -13,15 +46,15 @@
     "format": "{}",
     "rewrite": {
       "(.*) — LibreWolf": "󰇧 $1",
-      "(.*) — Abaze Floorp": "󰇧 $1",
+      "(.*) — Thorium": "󰇧 $1",
       "(.*) — Mozilla Firefox": "󰇧 $1",
       "(.*) — Brave": "󰇧 $1",
       "(.*) - Discord": "󰙯 $1",
-      "(.*) - fish": "> [$1]",
     },
     "separate-outputs": true
   },
   "mpris": {
+    "player": "spotify",
     "format": "{player_icon} {artist} - {title}",
     "format-paused": "{status_icon} <i>{artist} - {title}</i>",
     "player-icons": {
@@ -32,9 +65,9 @@
     "status-icons": {
       "paused": "<span color='#D08770'>⏸</span>"
     },
-    "ignored-players": [
-      "firefox"
-    ]
+    // "ignored-players": [
+    //   "firefox"
+    // ]
   },
   // "custom/spotify": {
   //     "format": "{icon} {}",
@@ -82,14 +115,15 @@
     "on-click-middle": "pkill pavucontrol || pavucontrol",
     "on-click-right": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
     "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1%",
-    "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1%"
+    "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1%",
+    "ignored-sinks": ["Easy Effects Sink"]
   },
   "bluetooth": {
 	  // "controller": "controller1", // specify the alias of the controller if there are more than 1 on the system
 	  "format": "<span color='#5E81AC'></span> {status}",
 	  "format-disabled": "", // an empty format will hide the module
 	  "format-connected": "<span color='#5E81AC'></span> {device_alias}",
-    "format-connected-battery": "<span color='#5E81AC'></span> {device_alias} - {device_battery_percentage}%",
+    "format-connected-battery": "<span color='#5E81AC'></span> {device_alias} ({device_battery_percentage}%)",
 	  "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
 	  "tooltip-format-connected": "{controller_alias}\n{controller_address}\n\n{num_connections} connected\n{device_enumerate}",
 	  "tooltip-format-enumerate-connected": "{device_alias}\n{device_address}",
@@ -108,14 +142,28 @@
   "custom/cpu": {
     "format": "<span color='#5E81AC'> CPU</span>:",
   },
+  // "cpu": {
+  //   "interval": 5,
+  //   "format": "<span color='#5E81AC'>󰻠</span> {usage}% ({load})",
+  //   "tooltip": true,
+  //   "states": {
+  //     "warning": 70,
+  //     "critical": 90
+  //   }
+  // },
   "cpu": {
-    "interval": 5,
-    "format": "<span color='#5E81AC'>󰻠</span> {usage}% ({load})",
-    "tooltip": true,
-    "states": {
-      "warning": 70,
-      "critical": 90
-    }
+    "interval": 1,
+    "format": "<span color='#5E81AC'>󰻠</span> {icon} {usage}% ({load})",
+    "format-icons": [
+      "<span color='#69ff94'>▁</span>", // green
+      "<span color='#2aa9ff'>▂</span>", // blue
+      "<span color='#f8f8f2'>▃</span>", // white
+      "<span color='#f8f8f2'>▄</span>", // white
+      "<span color='#ffffa5'>▅</span>", // yellow
+      "<span color='#ffffa5'>▆</span>", // yellow
+      "<span color='#ff9977'>▇</span>", // orange
+      "<span color='#dd532e'>█</span>"  // red
+    ]
   },
   "temperature": {
     // "thermal-zone": 2,
@@ -138,7 +186,7 @@
     "exec": " ~/.config/waybar/scripts/gpuinfo.sh",
     "return-type": "json",
     "format": "<span color='#5E81AC'></span> {}",
-    "interval": 5, // once every 5 seconds
+    "interval": 1, // once every 5 seconds
     "tooltip": true
   },
   "custom/gpu-usage": {
@@ -227,7 +275,7 @@
   "clock": {
     "format": "<span color='#5E81AC'></span> {:%H:%M} ",
     "locale": "fr_FR.UTF-8",
-    "format-alt": "<span color='#5E81AC'></span> {:%A %d %B %Y (%R)} ",
+    "format-alt": "<span color='#5E81AC'></span> {:L%A %d %B %Y (%R)} ",
     "tooltip-format": "<tt>{calendar}</tt>",
     "calendar": {
       "mode"          : "month",
