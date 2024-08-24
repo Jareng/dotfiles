@@ -1,9 +1,14 @@
 window {
-  width: 10%;
+  width: 20%;
 }
-
+/*
 mainbox {
   children: [listview];
+}
+*/
+inputbar {
+  children: [ prompt ];
+  padding: 10 0 10 10;
 }
 
 entry {
@@ -11,7 +16,7 @@ entry {
 }
 
 listview {
-	lines: 4;
+	lines: 6;
 }
 
 element {

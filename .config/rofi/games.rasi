@@ -1,0 +1,20 @@
+@import "games-default"
+
+* {
+    // background-color:               transparent;
+    background-color:               #23252E40;
+    background:                     #1D2330;
+    background-transparent:         #1D2330A0;
+    text-color:                     #949494;
+    text-color-selected:            #FFFFFF;
+    primary:                        #5E81AC;
+    important:                      #BF616A;
+}
+
+configuration {
+  font:             "Noto Sans Nerd Font 17";
+}
+
+element-icon {
+  size:             20%;
+}
