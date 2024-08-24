@@ -14,7 +14,7 @@
 #
 # hyprctl keyword misc:cursor_zoom_factor $magnify_value
 
-magnify_value="$(hyprctl -j getoption misc:cursor_zoom_factor | jaq '.float')"
+magnify_value="$(hyprctl -j getoption cursor:zoom_factor | jaq '.float')"
 incr="0.1"
 
 if [ "$1" == false ]; then
@@ -23,4 +23,4 @@ else
 	magnify_value="$(echo $magnify_value + $incr | bc)"
 fi
 
-hyprctl keyword misc:cursor_zoom_factor "$magnify_value"
+hyprctl keyword cursor:zoom_factor "$magnify_value"

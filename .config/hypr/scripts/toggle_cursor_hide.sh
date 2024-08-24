@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cursor_timeout="$(hyprctl -j getoption general:cursor_inactive_timeout | jq '.int')"
+cursor_timeout="$(hyprctl -j getoption cursor:inactive_timeout | jq '.int')"
 
 echo $cursor_timeout
 
@@ -12,4 +12,4 @@ else
 	notify-send "Hyprland" "Cusor Auto-Hide\nDisabled"
 fi
 
-hyprctl keyword general:cursor_inactive_timeout $timeout
+hyprctl keyword cursor:inactive_timeout $timeout
