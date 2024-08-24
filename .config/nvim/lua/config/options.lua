@@ -8,9 +8,16 @@ vim.filetype.add({
     rasi = "rasi",
   },
   pattern = {
-    ["~/.config/hypr/.*%.conf"] = "hypr",
-    ["~/.config/Kvantum/.*%.kvconfig"] = "toml",
-    -- ["~/.config/rofi/.*%.rasi"] = "rasi",
-    ["/etc/pacman.d/hooks/.*%.hook"] = "systemd",
+    -- ["~/.config/hypr/.*%.conf"] = "hyprlang",
+    [".*/hypr/.*%.conf"] = "hyprlang",
+    [".*/kitty/.*%.conf"] = "kitty",
+    [".*/hawck/.*%.hwk"] = "lua",
+    [".*/Kvantum/.*%.kvconfig"] = "toml",
+    [".*/rofi/.*%.rasi"] = "rasi",
+    [".*/hooks/.*%.hook"] = "systemd",
   },
 })
+
+vim.opt.spelllang = { "en", "fr_FR" }
+
+vim.g.autoformat = false

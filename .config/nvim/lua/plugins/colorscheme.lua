@@ -24,6 +24,8 @@ return {
       transparent = true,
       style = "storm", -- "storm", "night", "moon"
       styles = {
+        -- comments = { italic = true },
+        -- keywords = { italic = true },
         sidebars = "transparent",
         floats = "transparent",
       },

@@ -3,6 +3,4 @@ return {
   opts = {
     auto_install = true,
   },
-
-  "luckasRanarison/tree-sitter-hypr",
 }
