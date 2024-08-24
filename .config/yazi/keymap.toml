@@ -1,0 +1,18 @@
+# Smart paste: paste files without entering the directory
+[[manager.prepend_keymap]]
+on   = "l"
+run  = "plugin --sync smart-enter"
+desc = "Enter the child directory, or open the file"
+
+# Copy selected files to the system clipboard while yanking
+[[manager.prepend_keymap]]
+on  = "y"
+run = [ '''
+	shell 'for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list' --confirm
+''', "yank" ]
+
+# Dropping to the shell
+[[manager.prepend_keymap]]
+on   = "<C-s>"
+run  = 'shell "$SHELL" --block --confirm'
+desc = "Open shell here"
