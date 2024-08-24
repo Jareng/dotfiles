@@ -1,9 +1,13 @@
+## Path
+export PATH="$PATH:$CARGO_HOME/bin:$GOPATH/bin:$HOME/.scripts"
+
 ## Theme
 export GTK_THEME_VARIANT="dark"
 export QT_STYLE_OVERRIDE="kvantum"
-# export GTK_THEME="Flat-Remix-GTK-Blue-Dark-Solid"
+export GTK_THEME="Flat-Remix-GTK-Blue-Dark-Solid"
 # export XCURSOR_THEME="Vimix-white-cursors"
-# export XCURSOR_SIZE=40
+export XCURSOR_THEME="Nordzy-cursors"
+export XCURSOR_SIZE=30
 
 export XKB_DEFAULT_LAYOUT="fr"
 export XKB_DEFAULT_VARIANT="nodeadkeys"
@@ -31,6 +35,15 @@ export XDG_PUBLICSHARE_DIR="$HOME/Public"
 # export HISTSIZE=1000
 # export SAVEHIST="$HISTSIZE"
 
+# Android
+export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
+
+# Shell
+export HISTFILE="${XDG_STATE_HOME}/zsh/history"
+
+# dotnet
+export DOTNET_CLI_HOME="$XDG_DATA_HOME/dotnet"
+
 # Hyprshot
 export HYPRSHOT_DIR="$XDG_PICTURES_DIR/Hyprshot"
 
@@ -53,6 +66,9 @@ export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 # icons
 export XCURSOR_PATH=/usr/share/icons:"$XDG_DATA_HOME/icons"
 
+# Java
+_JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=gasp'
+
 # less
 export LESSHISTFILE="$XDG_STATE_HOME/less/history"
 export LESSKEY="$XDG_CONFIG_HOME/less/keys"
@@ -67,8 +83,14 @@ export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo":/usr/share/terminfo
 # nvm
 export NVM_DIR="$XDG_DATA_HOME/nvm"
 
+# Python
+export PYTHON_HISTORY="$XDG_DATA_HOME/python/history"
+
 # rustup
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+
+# Rust
+export RUSTC_WRAPPER=sccache
 
 # wget
 export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
@@ -86,11 +108,11 @@ export TERMINAL="kitty"
 export BROWSER="firefox"
 export FILE_MANAGER="thunar"
 export FILE_MANAGER_GUI="thunar"
-export FILE_MANAGER_TUI="ranger"
+export FILE_MANAGER_TUI="yazi"
 export CODE_EDITOR="vscode"
 export OPENER="xdg-open"
 # export PAGER="less"
-export PAGER="nvim"
+# export PAGER="nvim"
 # export WM="qtile"
 # Neovim Manpager
 export MANPAGER='nvim +Man!'
@@ -106,5 +128,5 @@ export KEYB_DEVICE_NAME="holtek-usb-hid-keyboard"
 export RESTIC_PASSWORD="smokeweed"
 export RESTIC_REPOSITORY="sftp:jareng@nastradamus:/srv/restic-repo"
 
-## Path
-export PATH="$PATH:$CARGO_HOME/bin:$HOME/.scripts"
+# Steam
+export STEAM_FORCE_DESKTOPUI_SCALING=1.5
