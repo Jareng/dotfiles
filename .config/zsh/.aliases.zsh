@@ -1,10 +1,14 @@
+
 alias clear="z4h-clear-screen-soft-bottom"
 
 alias color_table="for i in {0..255}; do print -Pn '%K{$i}  %k%F{$i}${(l:3::0:)i}%f ' ${${(M)$((i%6)):#3}:+$\'\n\'}; done"
 
 # Trash
-alias rm='"Use trash/trashy instead or \rm if your really want rm"; false'
-alias trash="trashy put"
+# alias rm='"Use trash/trashy instead or \rm if your really want rm"; false'
+alias trh="trashy put"
+
+# Rsync
+alias rsyncp="rsync -avh --inplace --no-whole-file --info=progress2"
 
 # pacman and yay
 alias unlock='sudo rm /var/lib/pacman/db.lck'    # remove pacman lock
@@ -31,7 +35,7 @@ alias vimdiff="nvim -d"
 alias nvimdiff="nvim -d"
 
 # Disable some console warnings likes GTK
-alias bottles-cli="hide-warnings bottles-cli"
+alias bottles-cli="flatpak run --command=bottles-cli com.usebottles.bottles"
 
 # move config files
 alias svn="svn --config-dir $XDG_CONFIG_HOME/subversion"
@@ -102,3 +106,7 @@ alias checkqtile="python3 ~/.config/qtile/config.py && qtile cmd-obj -o cmd -f v
 # compile dxvk
 alias updx="cd ~/Games/dxvk-tools/; git pull; ./updxvk build; ./updxvk lutris; ./updxvk proton-dist; ./upvkd3d-proton build; ./upvkd3d-proton lutris; ./upvkd3d-proton proton-dist"
 
+
+if [[ $HOST == 'nastradamus' ]]; then
+  alias trh="trash put"
+fi
