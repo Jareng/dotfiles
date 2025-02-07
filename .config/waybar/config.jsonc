@@ -3,12 +3,12 @@
     "height": 30,
     "output": ["DP-1"],
     "include": [
-      "~/.config/waybar/default-config.jsonc",
-    ],
+      "~/.config/waybar/default-config.jsonc"
+    ]
 },{
     "height": 26,
     "output": ["DP-2"],
     "include": [
-      "~/.config/waybar/default-config.jsonc",
-    ],
+      "~/.config/waybar/default-config.jsonc"
+    ]
 }]

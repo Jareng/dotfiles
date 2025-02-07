@@ -30,7 +30,9 @@
     "idle_inhibitor",
     "tray",
     "custom/weather",
-    "clock"
+    "clock",
+    "custom/notification",
+    "custom/spacer"
   ],
   "hyprland/workspaces": {
     "disable-scroll": true,
@@ -40,7 +42,7 @@
     "special-visible-only": true,
     "format": "{name}",
     "on-click": "activate",
-    "sort-by-number": true,
+    "sort-by-number": true
   },
   "hyprland/window": {
     "format": "{}",
@@ -49,7 +51,7 @@
       "(.*) — Thorium": "󰇧 $1",
       "(.*) — Mozilla Firefox": "󰇧 $1",
       "(.*) — Brave": "󰇧 $1",
-      "(.*) - Discord": "󰙯 $1",
+      "(.*) - Discord": "󰙯 $1"
     },
     "separate-outputs": true
   },
@@ -64,11 +66,37 @@
     },
     "status-icons": {
       "paused": "<span color='#D08770'>⏸</span>"
-    },
+    }
     // "ignored-players": [
     //   "firefox"
     // ]
   },
+  "custom/notification": {
+    "tooltip": false,
+    "format": "<span color='#5E81AC'>{icon}</span>",
+    "format-icons": {
+      "notification": "<span foreground='#D08770'><sup></sup></span>",
+      "none": "",
+      "dnd-notification": "<span foreground='#D08770'><sup></sup></span>",
+      "dnd-none": "",
+      "inhibited-notification": "<span foreground='#D08770'><sup></sup></span>",
+      "inhibited-none": "",
+      "dnd-inhibited-notification": "<span foreground='#D08770'><sup></sup></span>",
+      "dnd-inhibited-none": ""
+    },
+    "return-type": "json",
+    "exec-if": "which swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true
+  },
+  // "custom/notification": {
+  //   "tooltip": false,
+  //   "format": "<span color='#5E81AC'></span>",
+  //   "on-click": "swaync-client -t -sw",
+  //   "escape": true
+  // },
   // "custom/spotify": {
   //     "format": "{icon} {}",
   //     "escape": true,
@@ -140,7 +168,7 @@
   //     "format-icons": ["", "", "]
   // },
   "custom/cpu": {
-    "format": "<span color='#5E81AC'> CPU</span>:",
+    "format": "<span color='#5E81AC'> CPU</span>:"
   },
   // "cpu": {
   //   "interval": 5,
@@ -180,7 +208,7 @@
     ]
   },
   "custom/gpu": {
-    "format": "<span color='#5E81AC'> GPU</span>:",
+    "format": "<span color='#5E81AC'> GPU</span>:"
   },
   "custom/gpuinfo": {
     "exec": " ~/.config/waybar/scripts/gpuinfo.sh",
@@ -273,9 +301,10 @@
 //    }
 //  }
   "clock": {
-    "format": "<span color='#5E81AC'></span> {:%H:%M} ",
+    "format": "<span color='#5E81AC'></span> {:%H:%M}",
     "locale": "fr_FR.UTF-8",
-    "format-alt": "<span color='#5E81AC'></span> {:L%A %d %B %Y (%R)} ",
+    "timezone": "Europe/Paris",
+    "format-alt": "<span color='#5E81AC'></span> {:L%A %d %B %Y (%R)}",
     "tooltip-format": "<tt>{calendar}</tt>",
     "calendar": {
       "mode"          : "month",
@@ -299,4 +328,8 @@
       "on-scroll-down": "shift_up"
     }
   },
+  "custom/spacer": {
+    "tooltip": false,
+    "format": " "
+  }
 }
