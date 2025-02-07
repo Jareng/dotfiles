@@ -1,3 +1,5 @@
+# unset LC_ALL
+
 ## Path
 export PATH="$PATH:$CARGO_HOME/bin:$GOPATH/bin:$HOME/.scripts"
 
@@ -31,9 +33,14 @@ export XDG_VIDEOS_DIR="$HOME/Videos"
 export XDG_TEMPLATES_DIR="$HOME/Templates"
 export XDG_PUBLICSHARE_DIR="$HOME/Public"
 
+export XDG_DATA_DIRS="$HOME/.local/share/flatpak/exports/share:$XDG_DATA_DIRS"
+
 # Zsh
 # export HISTSIZE=1000
 # export SAVEHIST="$HISTSIZE"
+
+# Electron
+export ELECTRON_OZONE_PLATFORM_HINT="wayland"
 
 # Android
 export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
@@ -67,7 +74,7 @@ export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export XCURSOR_PATH=/usr/share/icons:"$XDG_DATA_HOME/icons"
 
 # Java
-_JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=gasp'
+# _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=gasp'
 
 # less
 export LESSHISTFILE="$XDG_STATE_HOME/less/history"
@@ -90,7 +97,7 @@ export PYTHON_HISTORY="$XDG_DATA_HOME/python/history"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 
 # Rust
-export RUSTC_WRAPPER=sccache
+export RUSTC_WRAPPER="sccache"
 
 # wget
 export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
@@ -98,7 +105,7 @@ export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
 # Wine
 export WINEPREFIX="$XDG_DATA_HOME/wine"
 # Stop wine setting its own applications as defaults
-export WINEDLLOVERRIDES=winemenubuilder.exe=d
+export WINEDLLOVERRIDES="winemenubuilder.exe=d"
 
 ## Variables
 export TERM="xterm-256color"
@@ -123,10 +130,6 @@ export DIFFPROG="nvim -d"
 export PIPEWIRE_LATENCY="256/48000"
 
 export KEYB_DEVICE_NAME="holtek-usb-hid-keyboard"
-
-# Restic
-export RESTIC_PASSWORD="smokeweed"
-export RESTIC_REPOSITORY="sftp:jareng@nastradamus:/srv/restic-repo"
 
 # Steam
 export STEAM_FORCE_DESKTOPUI_SCALING=1.5
