@@ -1,0 +1,17 @@
+#!/bin/bash
+
+MONITOR="DP-1"
+RESOLUTION="2560x1440"
+POSITION="0x0"
+NEW_HZ="120"
+SCALE="1"
+
+# Apply the new refresh rate
+hyprctl eval "hl.monitor({ output = '$MONITOR', mode = '${RESOLUTION}@${NEW_HZ}', position = '${POSITION}', scale = '${SCALE}' })"
+
+# Send notification
+notify-send \
+    --icon=display \
+    --urgency=normal \
+    "🖥️ Monitor Refresh Rate" \
+    "${MONITOR}: Switched to ${NEW_HZ}Hz"

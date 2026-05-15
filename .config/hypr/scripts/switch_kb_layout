@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Switch to next layout
+hyprctl switchxkblayout all next
+
+# Grab the new active layout
+NEW_LAYOUT=$(hyprctl devices -j | jaq -r '.keyboards[] | select(.main == true) | .active_keymap')
+
+# Send notification
+notify-send \
+    --icon=input-keyboard \
+    --urgency=normal \
+    "⌨️ Keyboard Layout" \
+    "Switched to: $NEW_LAYOUT"

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+MONITOR="DP-1"
+RESOLUTION="2560x1440"
+POSITION="0x0"
+SCALE="1"
+
+# Get current refresh rate from Hyprland
+CURRENT_HZ=$(hyprctl monitors -j | jaq -r ".[] | select(.name == \"$MONITOR\") | .refreshRate" | cut -d'.' -f1)
+
+if [ "$CURRENT_HZ" -ge 100 ]; then
+    NEW_HZ=60
+else
+    NEW_HZ=120
+fi
+
+# Apply the new refresh rate
+# hyprctl keyword monitor "$MONITOR,${RESOLUTION}@${NEW_HZ},${POSITION},${SCALE}"
+hyprctl eval "hl.monitor({ output = '$MONITOR', mode = '${RESOLUTION}@${NEW_HZ}', position = '${POSITION}', scale = '${SCALE}' })"
+
+# Send notification
+notify-send \
+    --icon=display \
+    --urgency=normal \
+    "🖥️ Monitor Refresh Rate" \
+    "${MONITOR}: Switched to ${NEW_HZ}Hz"
