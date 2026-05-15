@@ -10,7 +10,10 @@
   // Choose the order of the modules
   "modules-left": [
     "hyprland/workspaces",
-    "hyprland/window"
+    "hyprland/windowcount",
+    "hyprland/window",
+    "niri/workspaces",
+    "niri/window"
   ],
   "modules-center": [
     "mpris"
@@ -29,9 +32,10 @@
     "network",
     "idle_inhibitor",
     "tray",
-    "custom/weather",
+    // "custom/weather",
     "clock",
     "custom/notification",
+    // "custom/wlsunset",
     "custom/spacer"
   ],
   "hyprland/workspaces": {
@@ -44,6 +48,27 @@
     "on-click": "activate",
     "sort-by-number": true
   },
+  "niri/workspaces": {
+    "disable-scroll": true,
+    "all-outputs": false,
+    "active-only": false,
+    "show-special": false,
+    "special-visible-only": true,
+    "format": "{icon}",
+    "on-click": "activate",
+    "sort-by-number": true
+  },
+  "niri/window": {
+	  "format": "{}",
+    "rewrite": {
+      "(.*) — LibreWolf": "󰇧 $1",
+      "(.*) — Thorium": "󰇧 $1",
+      "(.*) — Mozilla Firefox": "󰇧 $1",
+      "(.*) — Brave": "󰇧 $1",
+      "(.*) - Discord": "󰙯 $1"
+    },
+    "separate-outputs": true
+	},
   "hyprland/window": {
     "format": "{}",
     "rewrite": {
@@ -55,21 +80,42 @@
     },
     "separate-outputs": true
   },
+  "hyprland/windowcount": {
+    "format": "[{}]",
+    "format-empty": " ",
+    // "format-windowed": "[T]",
+    // "format-fullscreen": "[{}]",
+    "separate-outputs": true
+  },
   "mpris": {
-    "player": "spotify",
+    // "player": "spotify",
     "format": "{player_icon} {artist} - {title}",
     "format-paused": "{status_icon} <i>{artist} - {title}</i>",
     "player-icons": {
+      // "default": "<span color='#A3BE8C'></span>",
       "default": "<span color='#A3BE8C'></span>",
       "mpv": "<span color='#A3BE8C'>󰎈</span>",
       "spotify": "<span color='#A3BE8C'></span>"
     },
     "status-icons": {
       "paused": "<span color='#D08770'>⏸</span>"
+    },
+    "ignored-players": [
+      "firefox"
+    ]
+  },
+  "custom/wlsunset": {
+    "interval": "once",
+    "exec": "if pgrep wlsunset >/dev/null 2>&1; then stdbuf -oL printf '{\"alt\": \"on\"}'; else stdbuf -oL printf '{\"alt\": \"off\"}'; fi",
+    "on-click": "sh $HOME/.config/waybar/scripts/wlsunset.sh",
+    "signal": 1, // SIGRTMIN+1 or 35
+    "return-type": "json",
+    "format": "{icon}",
+    "tooltip-format": "wlsunset: {alt}",
+    "format-icons": {
+      "off": "☀️",
+      "on": "🌙"
     }
-    // "ignored-players": [
-    //   "firefox"
-    // ]
   },
   "custom/notification": {
     "tooltip": false,
@@ -302,7 +348,7 @@
 //  }
   "clock": {
     "format": "<span color='#5E81AC'></span> {:%H:%M}",
-    "locale": "fr_FR.UTF-8",
+    "locale": "en_US.UTF-8",
     "timezone": "Europe/Paris",
     "format-alt": "<span color='#5E81AC'></span> {:L%A %d %B %Y (%R)}",
     "tooltip-format": "<tt>{calendar}</tt>",
@@ -311,7 +357,6 @@
       "mode-mon-col"  : 2,
       "weeks-pos"     : "right",
       "on-scroll"     : 1,
-      "on-click-right": "mode",
       "format": {
         "months":     "<span color='#E5E9F0'><b>{}</b></span>",
         "days":       "<span color='#B3B8C3'><b>{}</b></span>",

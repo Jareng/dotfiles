@@ -1,3 +1,12 @@
+# SSH
+alias sshrout="ssh root@router"
+alias sshpve="ssh root@pve"
+alias sshpbs="ssh root@pbs"
+alias sshcad="ssh root@caddy"
+alias sshdoc="ssh docker@docker"
+alias sshpi="ssh root@dietpi"
+
+alias zsreload="exec zsh"
 
 alias clear="z4h-clear-screen-soft-bottom"
 
@@ -106,7 +115,3 @@ alias checkqtile="python3 ~/.config/qtile/config.py && qtile cmd-obj -o cmd -f v
 # compile dxvk
 alias updx="cd ~/Games/dxvk-tools/; git pull; ./updxvk build; ./updxvk lutris; ./updxvk proton-dist; ./upvkd3d-proton build; ./upvkd3d-proton lutris; ./upvkd3d-proton proton-dist"
 
-
-if [[ $HOST == 'nastradamus' ]]; then
-  alias trh="trash put"
-fi

@@ -10,12 +10,12 @@
 ## style-1   style-2   style-3   style-4   style-5
 
 # Current Theme
-dir="$HOME/.config/rofi/powermenu"
-theme='style-1'
+DIR="$HOME/.config/rofi/powermenu"
+THEME='style-1'
 
 # CMDs
-uptime="`uptime -p | sed -e 's/up //g'`"
-host="Archlinux"
+UPTIME="`uptime -p | sed -e 's/up //g'`"
+HOST="Archlinux"
 
 # Options
 shutdown='⏻ Shutdown'
@@ -29,9 +29,9 @@ no='󰅖 No'
 # Rofi CMD
 rofi_cmd() {
 	rofi -dmenu \
-		-p "$host" \
-		-mesg "Uptime: $uptime" \
-		-theme "${dir}/${theme}".rasi
+		-p "$HOST" \
+		-mesg "Uptime: $UPTIME" \
+		-theme "${DIR}/${THEME}".rasi
 }
 
 # Confirmation CMD
@@ -44,7 +44,7 @@ confirm_cmd() {
 		-dmenu \
 		-p 'Confirmation' \
 		-mesg 'Are you Sure?' \
-		-theme "${dir}/${theme}".rasi
+		-theme "${DIR}/${THEME}".rasi
 }
 
 # Ask for confirmation
@@ -63,22 +63,29 @@ run_cmd() {
 	selected="$(confirm_exit)"
 	if [[ "$selected" == "$yes" ]]; then
 		if [[ $1 == '--shutdown' ]]; then
-			systemctl poweroff
+		  # systemctl poweroff
+      hyprshutdown -t 'Shutting down...' --post-cmd 'shutdown -P 0'
 		elif [[ $1 == '--reboot' ]]; then
-			systemctl reboot
+			# systemctl reboot
+      hyprshutdown -t 'Restarting...' --post-cmd 'reboot'
 		elif [[ $1 == '--suspend' ]]; then
 			mpc -q pause
 			amixer set Master mute
 			systemctl suspend
 		elif [[ $1 == '--logout' ]]; then
-			if [[ "$DESKTOP_SESSION" == 'openbox' ]]; then
+      uwsm stop
+			if [[ "$XDG_DESKTOP_SESSION" == 'openbox' ]]; then
 				openbox --exit
-			elif [[ "$DESKTOP_SESSION" == 'bspwm' ]]; then
+			elif [[ "$XDG_DESKTOP_SESSION" == 'bspwm' ]]; then
 				bspc quit
-			elif [[ "$DESKTOP_SESSION" == 'i3' ]]; then
+			elif [[ "$XDG_DESKTOP_SESSION" == 'i3' ]]; then
 				i3-msg exit
-			elif [[ "$DESKTOP_SESSION" == 'plasma' ]]; then
+			elif [[ "$XDG_DESKTOP_SESSION" == 'plasma' ]]; then
 				qdbus org.kde.ksmserver /KSMServer logout 0 0 0
+      elif [[ "$XDG_DESKTOP_SESSION" == 'hyprland' ]]; then
+        # loginctl terminate-session "$XDG_SESSION_ID"
+        # uwsm stop
+        hyprshutdown -t 'Logging out...'
 			fi
 		fi
 	else

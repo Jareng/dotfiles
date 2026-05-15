@@ -1,11 +1,18 @@
 {
   "$schema": "/etc/xdg/swaync/configSchema.json",
+  "ignore-gtk-theme": true,
+  "positionX": "right",
+  "positionY": "top",
+  "layer": "overlay",
   "control-center-layer": "top",
   "layer-shell": true,
-  "cssPriority": "application",
+  "layer-shell-cover-screen": true,
+  "cssPriority": "user",
   "timeout": 8,
   "timeout-low": 4,
   "timeout-critical": 0,
+  "notification-window-width": 700,
+  "notification-2fa-action": false,
   "fit-to-screen": true,
   "keyboard-shortcuts": true,
   "script-fail-notify": true,
@@ -13,7 +20,6 @@
     "mpris",
     "title",
     "notifications",
-    "volume",
     "backlight",
     "buttons-grid"
   ],
@@ -28,8 +34,9 @@
       "text": "Notification Center!"
     },
     "mpris": {
-      "image-size": 80,
-      "image-radius": 0
+      "blacklist": ["*.firefox.*"],
+      "autohide": true,
+      "show-album-art": "always"
     },
     "volume": {
       "label": "󰕾 "
@@ -59,18 +66,17 @@
           "type":"toggle"
         },
         {
-            "label": "",
-            "command": "hyprlock"
+          "label": "",
+          "command": "hyprlock"
         },
         {
-            "label":"",
-            "command": "reboot"
+          "label":"",
+          "command": "reboot"
         },
         {
-            "label":"",
-            "command": "shutdown now"
+          "label":"",
+          "command": "shutdown now"
         }
-
       ]
     }
   }

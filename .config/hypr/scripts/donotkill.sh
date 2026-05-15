@@ -1,7 +1,7 @@
 #!/bin/sh
 
-active_window="$(hyprctl activewindow -j | jq -r ".class")"
+ACTIVE_WINDOW="$(hyprctl activewindow -j | jq -r ".class")"
 
-if [ "$active_window" != "firefox" ]; then
-	hyprctl dispatch killactive ""
+if [ "$ACTIVE_WINDOW" != "firefox" ]; then
+  hyprctl dispatch 'hl.window.close()'
 fi

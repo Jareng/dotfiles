@@ -10,7 +10,7 @@
 @define-color noti-bg-alt alpha(#22252E, .8);
 @define-color noti-fg #B3B8C3;
 @define-color noti-bg-hover alpha(#5E81AC, .9);
-@define-color noti-bg-focus alpha(#A3BE8C, .9);
+@define-color noti-bg-focus alpha(#A3BE8C, 0);
 @define-color noti-close-bg rgba(255, 255, 255, 0.1);
 @define-color noti-close-bg-hover rgba(255, 255, 255, 0.15);
 @define-color noti-urgent #BF616A;
@@ -40,17 +40,17 @@
 }
 
 /* Uncomment to enable specific urgency colors */
-/* .low {
-  background: yellow;
-  padding: 6px;
-  border-radius: 12px;
-}
+// .low {
+//  background: yellow;
+//  padding: 6px;
+//  border-radius: 12px;
+// }
 
-.normal {
-  background: green;
-  padding: 6px;
-  border-radius: 12px;
-} */
+// .normal {
+//   background: green;
+//   padding: 6px;
+//   border-radius: 12px;
+// }
 
 .critical {
   background: @noti-urgent;
@@ -268,14 +268,14 @@
 
 /* Volume and Brightness Widget*/
 
-.widget-volume {
-  background-color: @noti-bg;
-  border-radius: 12px;
-  padding: 4px 8px 8px 8px;
-  margin: 0px 8px 8px 8px;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
-}
+// .widget-volume {
+//   background-color: @noti-bg;
+//   border-radius: 12px;
+//   padding: 4px 8px 8px 8px;
+//   margin: 0px 8px 8px 8px;
+//   border-bottom-left-radius: 12px;
+//   border-bottom-right-radius: 12px;
+// }
 
 .widget-backlight {
   background-color: @noti-bg;
@@ -285,11 +285,11 @@
   border-top-right-radius: 12px;
 }
 
-.KB {
-  padding: 4px 8px 4px 8px;
-  margin: 0px 8px 0px 8px;
-  border-radius: 0;
-}
+// .KB {
+//   padding: 4px 8px 4px 8px;
+//   margin: 0px 8px 0px 8px;
+//   border-radius: 0;
+// }
 
 .power-buttons{
   background-color: @noti-bg;

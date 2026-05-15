@@ -1,18 +1,32 @@
-# Smart paste: paste files without entering the directory
-[[manager.prepend_keymap]]
-on   = "l"
-run  = "plugin --sync smart-enter"
-desc = "Enter the child directory, or open the file"
+# yazi-rs/plugins:chmod
+[[mgr.prepend_keymap]]
+on   = [ "c", "m" ]
+run  = "plugin chmod"
+desc = "Chmod on selected files"
 
-# Copy selected files to the system clipboard while yanking
-[[manager.prepend_keymap]]
+# boydaihungst/mediainfo
+[[mgr.prepend_keymap]]
+on = "<F9>"
+run = "plugin mediainfo -- toggle-metadata"
+desc = "Toggle media preview metadata"
+
+# XYenon/clipboard
+[[mgr.prepend_keymap]]
 on  = "y"
-run = [ '''
-	shell 'for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list' --confirm
-''', "yank" ]
+run = [ "yank", 'plugin clipboard -- --action=copy' ]
 
-# Dropping to the shell
-[[manager.prepend_keymap]]
-on   = "<C-s>"
-run  = 'shell "$SHELL" --block --confirm'
-desc = "Open shell here"
+[[mgr.prepend_keymap]]
+on  = "<C-p>"
+run = [ 'plugin clipboard -- --action=paste' ]
+
+# pirafrank/what-size
+[[mgr.prepend_keymap]]
+on = [ ".", "s" ]
+run  = "plugin what-size"
+desc = "Calc size of selection or cwd"
+
+# yazi-rs/plugins:smart-enter
+[[mgr.prepend_keymap]]
+on   = "l"
+run  = "plugin smart-enter"
+desc = "Enter the child directory, or open the file"

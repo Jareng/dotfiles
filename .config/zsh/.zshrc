@@ -65,9 +65,9 @@ export GPG_TTY=$TTY
 
 # Source additional local files if they exist.
 z4h source $ZDOTDIR/.aliases.zsh
-z4h source ~/.env.zsh
+# z4h source ~/.env.zsh
 z4h source ~/.env.secrets.zsh
-z4h source ~/.wlinitrc
+# z4h source ~/.wlinitrc
 
 # Use additional Git repositories pulled in with `z4h install`.
 #
@@ -107,8 +107,20 @@ alias ls="${aliases[ls]:-ls} -A"
 setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 
+# Yazi Shell Wrapper
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	command yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+
+# load p10k
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
 # atuin
 eval "$(atuin init zsh)"
 
-# appman
-source "/home/jareng/.local/share/bash-completion/completions/appman"
+# zoxide
+eval "$(zoxide init zsh)"

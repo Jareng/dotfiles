@@ -3,7 +3,12 @@
 -- Add any additional options here
 
 vim.filetype.add({
-  extension = { conf = "config", rasi = "rasi", wofi = "rasi" },
+  extension = {
+    conf = "config",
+    rasi = "rasi",
+    wofi = "rasi",
+    nsp = "json",
+  },
   filename = {
     ["vifmrc"] = "vim",
   },
